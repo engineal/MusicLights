@@ -1,1 +1,8 @@
 language: java
+jdk:
+  - oraclejdk8
+os:
+  - linux
+
+before-install:
+  - curl -s get.pi4j.com | sudo bash

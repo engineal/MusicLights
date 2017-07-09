@@ -24,7 +24,7 @@ import com.pi4j.io.gpio.GpioFactory;
  */
 public class DotStarDisplay {
 
-    private static final GpioController gpio = GpioFactory.getInstance();
+    //private static final GpioController gpio = GpioFactory.getInstance();
 
     /**
      * Create a new DotStarDisplay

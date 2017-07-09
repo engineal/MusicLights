@@ -25,8 +25,11 @@ public class MusicLights {
 
     /**
      * Begin the program
+     *
+     * @param args
      */
-    public static void main() {
+    public static void main(String[] args) {
         new DotStarDisplay();
+        System.out.println("Hello World!");
     }
 }
