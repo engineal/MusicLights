@@ -13,20 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.engineal.musiclights;
+package display;
 
-import display.DotStarDisplay;
+import com.pi4j.io.gpio.GpioController;
+import com.pi4j.io.gpio.GpioFactory;
 
 /**
  *
  * @author Aaron Lucia
  */
-public class MusicLights {
+public class DotStarDisplay {
+
+    private static final GpioController gpio = GpioFactory.getInstance();
 
     /**
-     * Begin the program
+     * Create a new DotStarDisplay
      */
-    public static void main() {
-        new DotStarDisplay();
+    public DotStarDisplay() {
+
     }
 }
