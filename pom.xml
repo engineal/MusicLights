@@ -11,15 +11,17 @@
             <artifactId>pi4j-core</artifactId>
             <version>1.1</version>
         </dependency>
-        <dependency>
+    </dependencies>
+	<plugins>
+        <plugin>
             <groupId>org.eluder.coveralls</groupId>
             <artifactId>coveralls-maven-plugin</artifactId>
             <version>4.3.0</version>
-			<configuration>
-				<repoToken>ratljNp6dqoeE0ErfNw7dzy4kfOkGaiwc</repoToken>
-			</configuration>
-        </dependency>
-    </dependencies>
+            <configuration>
+                <repoToken>ratljNp6dqoeE0ErfNw7dzy4kfOkGaiwc</repoToken>
+            </configuration>
+        </plugin>
+	</plugins>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
