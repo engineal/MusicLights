@@ -6,3 +6,6 @@ os:
 
 before-install:
   - curl -s get.pi4j.com | sudo bash
+
+after_success:
+  - mvn clean cobertura:cobertura org.eluder.coveralls:coveralls-maven-plugin:report
