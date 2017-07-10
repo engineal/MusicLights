@@ -15,7 +15,7 @@
  */
 package com.engineal.musiclights;
 
-import display.DotStarDisplay;
+import com.engineal.musiclights.display.DotStarDisplay;
 
 /**
  *
