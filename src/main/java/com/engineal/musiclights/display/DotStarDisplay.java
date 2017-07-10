@@ -15,21 +15,34 @@
  */
 package com.engineal.musiclights.display;
 
-import com.pi4j.io.gpio.GpioController;
-import com.pi4j.io.gpio.GpioFactory;
+import com.engineal.musiclights.display.io.DotStar;
+import com.engineal.musiclights.display.io.DotStarException;
+import java.awt.Color;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Aaron Lucia
  */
 public class DotStarDisplay {
+    
+    private static final Logger LOG = Logger.getLogger(DotStarDisplay.class.getName());
 
-    //private static final GpioController gpio = GpioFactory.getInstance();
+
     /**
      * Create a new DotStarDisplay
      */
     public DotStarDisplay() {
-
+        try {
+            DotStar strip = new DotStar(150);
+            strip.clear();
+            strip.show();
+            strip.setPixelColor(0, Color.GREEN);
+            strip.show();
+        } catch (DotStarException ex) {
+            LOG.log(Level.SEVERE, "DotStar error", ex);
+        }
     }
 
     /**
