@@ -15,9 +15,13 @@
  */
 package com.engineal.musiclights.display.io;
 
-import com.pi4j.wiringpi.Spi;
+import com.pi4j.io.spi.SpiChannel;
+import com.pi4j.io.spi.SpiDevice;
+import com.pi4j.io.spi.SpiFactory;
+import com.pi4j.io.spi.SpiMode;
 import java.awt.Color;
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  *
@@ -25,7 +29,7 @@ import java.io.IOException;
  */
 public class DotStar {
 
-    private int fd;
+    private SpiDevice spi;
 
     private final byte[] data; // pixel data
 
@@ -49,10 +53,7 @@ public class DotStar {
             throw new IllegalArgumentException("Speed must be between 500kHz - 32MHz");
         }
 
-        fd = Spi.wiringPiSPISetupMode(0, speed, 0x40);
-        if (fd <= -1) {
-            throw new IOException("SPI port setup failed, wiringPiSPISetupMode returned " + fd);
-        }
+        spi = SpiFactory.getInstance(SpiChannel.CS0, speed, SpiMode.MODE_0);
     }
 
     /**
@@ -99,10 +100,8 @@ public class DotStar {
      * @throws java.io.IOException
      */
     public void show() throws IOException {
-        System.out.println(data);
-        if (Spi.wiringPiSPIDataRW(0, data) <= 0) {
-            throw new IOException("Failed to write data to SPI channel: " + 0);
-        }
+        System.out.println(Arrays.toString(data));
+        spi.write(data);
     }
 
     /**
