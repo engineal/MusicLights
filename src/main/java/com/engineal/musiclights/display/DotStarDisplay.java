@@ -68,8 +68,11 @@ public class DotStarDisplay {
             head += 1;                              // Advance head position
             if (head >= 150) {    // Off end of strip?
                 head = 0;                           // Reset to start
-                color = new Color(color.getRGB() >> 8);
-                if (color.getRGB() == 0) {
+                if (color == Color.RED) {
+                    color = Color.BLUE;
+                } else if (color == Color.BLUE) {
+                    color = Color.GREEN;
+                } else if (color == Color.GREEN) {
                     color = Color.RED;
                 }
             }
