@@ -37,13 +37,7 @@
                 <version>1.6.0</version>
                 <configuration>
                     <executable>java</executable>
-                    <arguments>
-                        <argument>-classpath</argument>
-                        <!-- automatically creates the classpath using all project dependencies,
-                             also adding the project build directory -->
-                        <classpath/>
-                        <argument>com.example.Main</argument>
-                    </arguments>
+                    <mainClass>com.engineal.musiclights.MusicLights</mainClass>
                 </configuration>
             </plugin>
             <plugin>

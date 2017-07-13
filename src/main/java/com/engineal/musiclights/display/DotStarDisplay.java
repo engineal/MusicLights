@@ -37,11 +37,15 @@ public class DotStarDisplay {
         try {
             DotStar strip = new DotStar(150);
             strip.clear();
-            strip.show();
-            strip.setPixelColor(0, Color.GREEN);
-            strip.show();
+            for (int i = 0; i < 150; i++) {
+                strip.setPixelColor(i, Color.GREEN);
+                strip.show();
+                Thread.sleep(250);
+            }
         } catch (DotStarException ex) {
             LOG.log(Level.SEVERE, "DotStar error", ex);
+        } catch (InterruptedException ex) {
+            LOG.log(Level.SEVERE, null, ex);
         }
     }
 
