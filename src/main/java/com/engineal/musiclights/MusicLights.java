@@ -16,6 +16,9 @@
 package com.engineal.musiclights;
 
 import com.engineal.musiclights.display.DotStarDisplay;
+import com.engineal.musiclights.display.io.DotStarException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -29,7 +32,12 @@ public class MusicLights {
      * @param args
      */
     public static void main(String[] args) {
-        new DotStarDisplay();
         System.out.println("Hello World!");
+        try {
+            DotStarDisplay display = new DotStarDisplay();
+            display.run();
+        } catch (DotStarException ex) {
+            Logger.getLogger(MusicLights.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

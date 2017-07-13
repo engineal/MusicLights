@@ -26,26 +26,30 @@ import java.util.logging.Logger;
  * @author Aaron Lucia
  */
 public class DotStarDisplay {
-    
+
     private static final Logger LOG = Logger.getLogger(DotStarDisplay.class.getName());
 
+    private final DotStar strip;
 
     /**
      * Create a new DotStarDisplay
+     *
+     * @throws com.engineal.musiclights.display.io.DotStarException
      */
-    public DotStarDisplay() {
-        try {
-            DotStar strip = new DotStar(150);
-            strip.clear();
-            for (int i = 0; i < 150; i++) {
+    public DotStarDisplay() throws DotStarException {
+        strip = new DotStar(150);
+    }
+
+    public void run() {
+        strip.clear();
+        for (int i = 0; i < 150; i++) {
+            try {
                 strip.setPixelColor(i, Color.GREEN);
                 strip.show();
-                Thread.sleep(250);
+                Thread.sleep(20);
+            } catch (InterruptedException | DotStarException ex) {
+                LOG.log(Level.SEVERE, null, ex);
             }
-        } catch (DotStarException ex) {
-            LOG.log(Level.SEVERE, "DotStar error", ex);
-        } catch (InterruptedException ex) {
-            LOG.log(Level.SEVERE, null, ex);
         }
     }
 
