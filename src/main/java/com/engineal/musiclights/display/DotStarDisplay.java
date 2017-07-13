@@ -41,7 +41,41 @@ public class DotStarDisplay {
     }
 
     public void run() {
-        for (int i = 0; i < 3; i += 3) {
+        int head = 0; // Index of first 'on' pixel
+        int tail = -10; // Index of last 'off' pixel
+        Color color = Color.RED; // 'On' color (starts red)
+
+        for (int i = 0; i < 10000; i++) {
+            strip.setPixelColor(head, color);       // Turn on 'head' pixel
+            strip.setPixelColor(tail, Color.BLACK); // Turn off 'tail'
+
+            try {
+                strip.show();                       // Refresh strip
+            } catch (IOException ex) {
+                LOG.log(Level.SEVERE, null, ex);
+            }
+
+            try {
+                Thread.sleep(20);
+            } catch (InterruptedException ex) {
+                LOG.log(Level.SEVERE, null, ex);
+            }
+
+            head += 1;                              // Advance head position
+            if (head >= 150) {                      // Off end of strip?
+                head = 0;                           // Reset to start
+                color = new Color(color.getRGB() >> 8);
+                if (color.getRGB() == 0) {
+                    color = Color.RED;
+                }
+            }
+            tail += 1;                              // Advance tail position
+            if (tail >= 150) {
+                tail = 0;                           // Off end? Reset
+            }
+        }
+
+        for (int i = 0; i < 150; i += 3) {
             strip.setPixelColor(i, Color.RED);
             strip.setPixelColor(i + 1, Color.GREEN);
             strip.setPixelColor(i + 2, Color.BLUE);
@@ -51,22 +85,11 @@ public class DotStarDisplay {
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }
-        
+
         try {
             Thread.sleep(500);
         } catch (InterruptedException ex) {
             Logger.getLogger(DotStarDisplay.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        strip.clear();
-        
-        for (int i = 0; i < 100; i += 3) {
-            strip.setPixelColor(i, Color.RED);
-        }
-        try {
-            strip.show();
-        } catch (IOException ex) {
-            LOG.log(Level.SEVERE, null, ex);
         }
     }
 

@@ -21,7 +21,6 @@ import com.pi4j.io.spi.SpiFactory;
 import com.pi4j.io.spi.SpiMode;
 import java.awt.Color;
 import java.io.IOException;
-import java.util.Arrays;
 
 /**
  *
@@ -100,7 +99,6 @@ public class DotStar {
      * @throws java.io.IOException
      */
     public void show() throws IOException {
-        System.out.println(Arrays.toString(data));
         byte[] header = {0x00, 0x00, 0x00, 0x00};
         byte[] footer = {(byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF};
         
@@ -108,24 +106,4 @@ public class DotStar {
         spi.write(data);
         spi.write(footer);
     }
-
-    /**
-     * Issue data to strip. Raw data must be in strip-ready format (4
-     * bytes/pixel, 0xFF/B/G/R) and no brightness scaling is performed...it's
-     * all about speed (for POV, etc.)
-     *
-     * @param data raw bytearray to issue to strip
-     * @throws com.engineal.musiclights.display.io.DotStarException
-     */
-    /*public void show(byte[] data) throws DotStarException {
-        if (spi == null) {
-            throw new DotStarException("SPI device never initialized");
-        }
-
-        try {
-            spi.write(data);
-        } catch (IOException ex) {
-            throw new DotStarException("Could not write to SPI device", ex);
-        }
-    }*/
 }
