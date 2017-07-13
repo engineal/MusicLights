@@ -88,9 +88,9 @@ public class DotStar {
             throw new IllegalArgumentException("Index out of range");
         }
         
-        data[offset + 1] = (byte) (0xFF & color.getRed());
+        data[offset + 1] = (byte) (0xFF & color.getBlue());
         data[offset + 2] = (byte) (0xFF & color.getGreen());
-        data[offset + 3] = (byte) (0xFF & color.getBlue());
+        data[offset + 3] = (byte) (0xFF & color.getRed());
     }
 
     /**

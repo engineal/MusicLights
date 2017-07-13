@@ -41,10 +41,27 @@ public class DotStarDisplay {
     }
 
     public void run() {
-        for (int i = 0; i < 100; i += 3) {
+        for (int i = 0; i < 3; i += 3) {
             strip.setPixelColor(i, Color.RED);
             strip.setPixelColor(i + 1, Color.GREEN);
             strip.setPixelColor(i + 2, Color.BLUE);
+        }
+        try {
+            strip.show();
+        } catch (IOException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+        }
+        
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(DotStarDisplay.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        strip.clear();
+        
+        for (int i = 0; i < 100; i += 3) {
+            strip.setPixelColor(i, Color.RED);
         }
         try {
             strip.show();
