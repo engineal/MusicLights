@@ -34,9 +34,9 @@ public class DotStar {
      *
      * @param numLEDs The number of LEDs on the SPI channel
      * @param speed The bitrate for SPI communication
-     * @throws com.engineal.musiclights.display.io.DotStarException
+     * @throws java.io.IOException
      */
-    public DotStar(int numLEDs, int speed) throws DotStarException {
+    public DotStar(int numLEDs, int speed) throws IOException {
         if (numLEDs < 1) {
             throw new IllegalArgumentException("You must have at least 1 LED");
         }
@@ -45,17 +45,13 @@ public class DotStar {
             data[i] = (byte) 0xFF;
         }
 
-        if (speed < 5000000 || speed > 32000000) {
+        if (speed < 500000 || speed > 32000000) {
             throw new IllegalArgumentException("Speed must be between 500kHz - 32MHz");
         }
 
-        try {
-            fd = Spi.wiringPiSPISetupMode(0, speed, 0x40);
-            if (fd <= -1) {
-                throw new IOException("SPI port setup failed, wiringPiSPISetupMode returned " + fd);
-            }
-        } catch (IOException ex) {
-            throw new DotStarException("Could not get SPI device", ex);
+        fd = Spi.wiringPiSPISetupMode(0, speed, 0x40);
+        if (fd <= -1) {
+            throw new IOException("SPI port setup failed, wiringPiSPISetupMode returned " + fd);
         }
     }
 
@@ -63,10 +59,10 @@ public class DotStar {
      * Allocate new DotStar object with hardware SPI @ default rate
      *
      * @param numLEDs The number of LEDs on the SPI channel
-     * @throws com.engineal.musiclights.display.io.DotStarException
+     * @throws java.io.IOException
      */
-    public DotStar(int numLEDs) throws DotStarException {
-        this(numLEDs, 1000000);
+    public DotStar(int numLEDs) throws IOException {
+        this(numLEDs, 8000000);
     }
 
     /**
@@ -88,23 +84,24 @@ public class DotStar {
      */
     public void setPixelColor(int index, Color color) {
         int offset = index * 4;
-        data[offset + 1] = (byte) (0xFF & color.getBlue());
+        if (offset < 0 || offset > data.length) {
+            throw new IllegalArgumentException("Index out of range");
+        }
+        
+        data[offset + 1] = (byte) (0xFF & color.getRed());
         data[offset + 2] = (byte) (0xFF & color.getGreen());
-        data[offset + 3] = (byte) (0xFF & color.getRed());
+        data[offset + 3] = (byte) (0xFF & color.getBlue());
     }
 
     /**
      * Issue pixel buffer to strip
      *
-     * @throws com.engineal.musiclights.display.io.DotStarException
+     * @throws java.io.IOException
      */
-    public void show() throws DotStarException {
-        try {
-            if (Spi.wiringPiSPIDataRW(0, data) <= 0) {
-                throw new IOException("Failed to write data to SPI channel: " + 0);
-            }
-        } catch (IOException ex) {
-            throw new DotStarException("Could not write to SPI device", ex);
+    public void show() throws IOException {
+        System.out.println(data);
+        if (Spi.wiringPiSPIDataRW(0, data) <= 0) {
+            throw new IOException("Failed to write data to SPI channel: " + 0);
         }
     }
 

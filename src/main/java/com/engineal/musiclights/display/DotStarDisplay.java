@@ -16,8 +16,8 @@
 package com.engineal.musiclights.display;
 
 import com.engineal.musiclights.display.io.DotStar;
-import com.engineal.musiclights.display.io.DotStarException;
 import java.awt.Color;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,22 +34,22 @@ public class DotStarDisplay {
     /**
      * Create a new DotStarDisplay
      *
-     * @throws com.engineal.musiclights.display.io.DotStarException
+     * @throws java.io.IOException
      */
-    public DotStarDisplay() throws DotStarException {
+    public DotStarDisplay() throws IOException {
         strip = new DotStar(150);
     }
 
     public void run() {
-        strip.clear();
-        for (int i = 0; i < 150; i++) {
-            try {
-                strip.setPixelColor(i, Color.GREEN);
-                strip.show();
-                Thread.sleep(20);
-            } catch (InterruptedException | DotStarException ex) {
-                LOG.log(Level.SEVERE, null, ex);
-            }
+        for (int i = 0; i < 100; i += 3) {
+            strip.setPixelColor(i, Color.RED);
+            strip.setPixelColor(i + 1, Color.GREEN);
+            strip.setPixelColor(i + 2, Color.BLUE);
+        }
+        try {
+            strip.show();
+        } catch (IOException ex) {
+            LOG.log(Level.SEVERE, null, ex);
         }
     }
 

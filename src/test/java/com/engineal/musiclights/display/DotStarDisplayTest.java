@@ -15,7 +15,7 @@
  */
 package com.engineal.musiclights.display;
 
-import com.engineal.musiclights.display.io.DotStarException;
+import java.io.IOException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -50,10 +50,10 @@ public class DotStarDisplayTest {
     /**
      * Test of test method, of class DotStarDisplay.
      *
-     * @throws com.engineal.musiclights.display.io.DotStarException
+     * @throws java.io.IOException
      */
     @org.junit.Test
-    public void testTest() throws DotStarException {
+    public void testTest() throws IOException {
         System.out.println("test");
         DotStarDisplay instance = new DotStarDisplay();
         boolean expResult = true;
