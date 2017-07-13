@@ -15,9 +15,7 @@
  */
 package com.engineal.musiclights.display.io;
 
-import com.pi4j.io.spi.SpiChannel;
-import com.pi4j.io.spi.SpiDevice;
-import com.pi4j.io.spi.SpiFactory;
+import com.pi4j.wiringpi.Spi;
 import java.awt.Color;
 import java.io.IOException;
 
@@ -27,9 +25,39 @@ import java.io.IOException;
  */
 public class DotStar {
 
-    private SpiDevice spi;
+    private int fd;
 
     private final byte[] data; // pixel data
+
+    /**
+     * Allocate new DotStar object with hardware SPI @ bitrate
+     *
+     * @param numLEDs The number of LEDs on the SPI channel
+     * @param speed The bitrate for SPI communication
+     * @throws com.engineal.musiclights.display.io.DotStarException
+     */
+    public DotStar(int numLEDs, int speed) throws DotStarException {
+        if (numLEDs < 1) {
+            throw new IllegalArgumentException("You must have at least 1 LED");
+        }
+        data = new byte[numLEDs * 4];
+        for (int i = 0; i < data.length; i += 4) {
+            data[i] = (byte) 0xFF;
+        }
+
+        if (speed < 5000000 || speed > 32000000) {
+            throw new IllegalArgumentException("Speed must be between 500kHz - 32MHz");
+        }
+
+        try {
+            fd = Spi.wiringPiSPISetupMode(0, speed, 0x40);
+            if (fd <= -1) {
+                throw new IOException("SPI port setup failed, wiringPiSPISetupMode returned " + fd);
+            }
+        } catch (IOException ex) {
+            throw new DotStarException("Could not get SPI device", ex);
+        }
+    }
 
     /**
      * Allocate new DotStar object with hardware SPI @ default rate
@@ -38,42 +66,7 @@ public class DotStar {
      * @throws com.engineal.musiclights.display.io.DotStarException
      */
     public DotStar(int numLEDs) throws DotStarException {
-        if (numLEDs < 1) {
-            throw new IllegalArgumentException("You must have at least 1 LED");
-        }
-        data = new byte[numLEDs * 4];
-        for (int i = 0; i < data.length; i += 4) {
-            data[i] = (byte) 0xFF;
-        }
-
-        try {
-            spi = SpiFactory.getInstance(SpiChannel.CS0);
-        } catch (IOException ex) {
-            throw new DotStarException("Could not get SPI device", ex);
-        }
-    }
-
-    /**
-     * Allocate new DotStar object with hardware SPI @ bitrate
-     *
-     * @param numLEDs The number of LEDs on the SPI channel
-     * @param bitrate The bitrate for SPI communication
-     * @throws com.engineal.musiclights.display.io.DotStarException
-     */
-    public DotStar(int numLEDs, int bitrate) throws DotStarException {
-        if (numLEDs < 1) {
-            throw new IllegalArgumentException("You must have at least 1 LED");
-        }
-        data = new byte[numLEDs * 4];
-        for (int i = 0; i < data.length; i += 4) {
-            data[i] = (byte) 0xFF;
-        }
-
-        try {
-            spi = SpiFactory.getInstance(SpiChannel.CS0, bitrate);
-        } catch (IOException ex) {
-            throw new DotStarException("Could not get SPI device", ex);
-        }
+        this(numLEDs, 1000000);
     }
 
     /**
@@ -106,12 +99,10 @@ public class DotStar {
      * @throws com.engineal.musiclights.display.io.DotStarException
      */
     public void show() throws DotStarException {
-        if (spi == null) {
-            throw new DotStarException("SPI device never initialized");
-        }
-
         try {
-            spi.write(data);
+            if (Spi.wiringPiSPIDataRW(0, data) <= 0) {
+                throw new IOException("Failed to write data to SPI channel: " + 0);
+            }
         } catch (IOException ex) {
             throw new DotStarException("Could not write to SPI device", ex);
         }
@@ -125,7 +116,7 @@ public class DotStar {
      * @param data raw bytearray to issue to strip
      * @throws com.engineal.musiclights.display.io.DotStarException
      */
-    public void show(byte[] data) throws DotStarException {
+    /*public void show(byte[] data) throws DotStarException {
         if (spi == null) {
             throw new DotStarException("SPI device never initialized");
         }
@@ -135,5 +126,5 @@ public class DotStar {
         } catch (IOException ex) {
             throw new DotStarException("Could not write to SPI device", ex);
         }
-    }
+    }*/
 }
