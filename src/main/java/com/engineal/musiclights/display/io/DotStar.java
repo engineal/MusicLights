@@ -101,7 +101,12 @@ public class DotStar {
      */
     public void show() throws IOException {
         System.out.println(Arrays.toString(data));
+        byte[] header = {0x00, 0x00, 0x00, 0x00};
+        byte[] footer = {(byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF};
+        
+        spi.write(header);
         spi.write(data);
+        spi.write(footer);
     }
 
     /**
