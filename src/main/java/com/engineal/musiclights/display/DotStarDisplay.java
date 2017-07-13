@@ -46,8 +46,12 @@ public class DotStarDisplay {
         Color color = Color.RED; // 'On' color (starts red)
 
         for (int i = 0; i < 10000; i++) {
-            strip.setPixelColor(head, color);       // Turn on 'head' pixel
-            strip.setPixelColor(tail, Color.BLACK); // Turn off 'tail'
+            if (head >= 0 && head < 150) {
+                strip.setPixelColor(head, color);       // Turn on 'head' pixel
+            }
+            if (tail >= 0 && tail < 150) {
+                strip.setPixelColor(tail, Color.BLACK); // Turn off 'tail'
+            }
 
             try {
                 strip.show();                       // Refresh strip
@@ -62,7 +66,7 @@ public class DotStarDisplay {
             }
 
             head += 1;                              // Advance head position
-            if (head >= 150) {                      // Off end of strip?
+            if (head >= 150) {    // Off end of strip?
                 head = 0;                           // Reset to start
                 color = new Color(color.getRGB() >> 8);
                 if (color.getRGB() == 0) {
