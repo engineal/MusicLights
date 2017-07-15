@@ -99,13 +99,4 @@ public class DotStarDisplay {
             Logger.getLogger(DotStarDisplay.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    /**
-     * Return true
-     *
-     * @return
-     */
-    public boolean test() {
-        return true;
-    }
 }
