@@ -47,11 +47,11 @@ public class RainbowEffect extends Effect {
     public Map getChanges() {
         Map<Integer, Color> m = new HashMap<>();
         
-        double frequency = 1 / segmentLength;
+        double frequency = 2 * Math.PI / segmentLength;
         for (int i = 0; i < 150; i++) {
-            int red = (int) (Math.sin(frequency*i + 0) * 127 + 128);
-            int green = (int) (Math.sin(frequency*i + 2*Math.PI/3) * 127 + 128);
-            int blue = (int) (Math.sin(frequency*i + 4*Math.PI/3) * 127 + 128);
+            int red = (int) (Math.sin(frequency*(i+position)) * 127 + 128);
+            int green = (int) (Math.sin(frequency*(i+position) + 2*Math.PI/3) * 127 + 128);
+            int blue = (int) (Math.sin(frequency*(i+position) + 4*Math.PI/3) * 127 + 128);
             m.put(i, new Color(red, green, blue));
         }
         return m;

@@ -44,16 +44,26 @@ public class DotStarDisplay extends Display {
     }
     
     public void runEffect(Effect effect) {
-        strip.clear();
-        
-        effect.getChanges().entrySet().forEach((pair) -> {
-            strip.setPixelColor(pair.getKey(), pair.getValue());
-        });
-        
-        try {
-            strip.show();
-        } catch (IOException ex) {
-            LOG.log(Level.SEVERE, null, ex);
+        for (int i = 0; i < 5000; i++) {
+            strip.clear();
+
+            effect.getChanges().entrySet().forEach((pair) -> {
+                strip.setPixelColor(pair.getKey(), pair.getValue());
+            });
+
+            try {
+                strip.show();
+            } catch (IOException ex) {
+                LOG.log(Level.SEVERE, null, ex);
+            }
+            
+            try {
+                Thread.sleep(20);
+            } catch (InterruptedException ex) {
+                LOG.log(Level.SEVERE, null, ex);
+            }
+            
+            effect.advance();
         }
     }
 
