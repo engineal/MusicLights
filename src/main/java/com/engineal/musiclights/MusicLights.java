@@ -16,6 +16,7 @@
 package com.engineal.musiclights;
 
 import com.engineal.musiclights.display.DotStarDisplay;
+import com.engineal.musiclights.effects.RainbowEffect;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,7 +38,7 @@ public class MusicLights {
         System.out.println("Hello World!");
         try {
             DotStarDisplay display = new DotStarDisplay();
-            display.run();
+            display.runEffect(new RainbowEffect(30));
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }

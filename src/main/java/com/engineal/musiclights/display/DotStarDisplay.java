@@ -16,8 +16,11 @@
 package com.engineal.musiclights.display;
 
 import com.engineal.musiclights.display.io.DotStar;
+import com.engineal.musiclights.effects.Effect;
 import java.awt.Color;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,7 +28,7 @@ import java.util.logging.Logger;
  *
  * @author Aaron Lucia
  */
-public class DotStarDisplay {
+public class DotStarDisplay extends Display {
 
     private static final Logger LOG = Logger.getLogger(DotStarDisplay.class.getName());
 
@@ -39,8 +42,22 @@ public class DotStarDisplay {
     public DotStarDisplay() throws IOException {
         strip = new DotStar(150);
     }
+    
+    public void runEffect(Effect effect) {
+        strip.clear();
+        
+        effect.getChanges().entrySet().forEach((pair) -> {
+            strip.setPixelColor(pair.getKey(), pair.getValue());
+        });
+        
+        try {
+            strip.show();
+        } catch (IOException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+        }
+    }
 
-    public void run() {
+    private void run() {
         int head = 0; // Index of first 'on' pixel
         int tail = -10; // Index of last 'off' pixel
         Color color = Color.RED; // 'On' color (starts red)
@@ -80,23 +97,6 @@ public class DotStarDisplay {
             if (tail >= 150) {
                 tail = 0;                           // Off end? Reset
             }
-        }
-
-        for (int i = 0; i < 150; i += 3) {
-            strip.setPixelColor(i, Color.RED);
-            strip.setPixelColor(i + 1, Color.GREEN);
-            strip.setPixelColor(i + 2, Color.BLUE);
-        }
-        try {
-            strip.show();
-        } catch (IOException ex) {
-            LOG.log(Level.SEVERE, null, ex);
-        }
-
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(DotStarDisplay.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
