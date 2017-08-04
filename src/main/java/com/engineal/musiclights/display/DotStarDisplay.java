@@ -19,8 +19,6 @@ import com.engineal.musiclights.display.io.DotStar;
 import com.engineal.musiclights.effects.Effect;
 import java.awt.Color;
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,14 +35,14 @@ public class DotStarDisplay extends Display {
     /**
      * Create a new DotStarDisplay
      *
-     * @throws java.io.IOException
+     * @param strip
      */
-    public DotStarDisplay() throws IOException {
-        strip = new DotStar(150);
+    public DotStarDisplay(DotStar strip) {
+        this.strip = strip;
     }
-    
-    public void runEffect(Effect effect) {
-        for (int i = 0; i < 5000; i++) {
+
+    public void runEffect(Effect effect, long duration) {
+        for (int i = 0; i < duration; i++) {
             strip.clear();
 
             effect.getChanges().entrySet().forEach((pair) -> {
@@ -56,13 +54,13 @@ public class DotStarDisplay extends Display {
             } catch (IOException ex) {
                 LOG.log(Level.SEVERE, null, ex);
             }
-            
+
             try {
                 Thread.sleep(20);
             } catch (InterruptedException ex) {
                 LOG.log(Level.SEVERE, null, ex);
             }
-            
+
             effect.advance();
         }
     }

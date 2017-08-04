@@ -15,10 +15,6 @@
  */
 package com.engineal.musiclights.display.io;
 
-import com.pi4j.io.spi.SpiChannel;
-import com.pi4j.io.spi.SpiDevice;
-import com.pi4j.io.spi.SpiFactory;
-import com.pi4j.io.spi.SpiMode;
 import java.awt.Color;
 import java.io.IOException;
 
@@ -26,20 +22,11 @@ import java.io.IOException;
  *
  * @author Aaron Lucia
  */
-public class DotStar {
+public abstract class DotStar {
 
-    private SpiDevice spi;
+    protected final byte[] data; // pixel data
 
-    private final byte[] data; // pixel data
-
-    /**
-     * Allocate new DotStar object with hardware SPI @ bitrate
-     *
-     * @param numLEDs The number of LEDs on the SPI channel
-     * @param speed The bitrate for SPI communication
-     * @throws java.io.IOException
-     */
-    public DotStar(int numLEDs, int speed) throws IOException {
+    public DotStar(int numLEDs) {
         if (numLEDs < 1) {
             throw new IllegalArgumentException("You must have at least 1 LED");
         }
@@ -47,22 +34,6 @@ public class DotStar {
         for (int i = 0; i < data.length; i += 4) {
             data[i] = (byte) 0xFF;
         }
-
-        if (speed < 500000 || speed > 32000000) {
-            throw new IllegalArgumentException("Speed must be between 500kHz - 32MHz");
-        }
-
-        spi = SpiFactory.getInstance(SpiChannel.CS0, speed, SpiMode.MODE_0);
-    }
-
-    /**
-     * Allocate new DotStar object with hardware SPI @ default rate
-     *
-     * @param numLEDs The number of LEDs on the SPI channel
-     * @throws java.io.IOException
-     */
-    public DotStar(int numLEDs) throws IOException {
-        this(numLEDs, 8000000);
     }
 
     /**
@@ -87,23 +58,11 @@ public class DotStar {
         if (offset < 0 || offset > data.length) {
             throw new IllegalArgumentException("Index out of range");
         }
-        
+
         data[offset + 1] = (byte) (0xFF & color.getBlue());
         data[offset + 2] = (byte) (0xFF & color.getGreen());
         data[offset + 3] = (byte) (0xFF & color.getRed());
     }
 
-    /**
-     * Issue pixel buffer to strip
-     *
-     * @throws java.io.IOException
-     */
-    public void show() throws IOException {
-        byte[] header = {0x00, 0x00, 0x00, 0x00};
-        byte[] footer = {(byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF};
-        
-        spi.write(header);
-        spi.write(data);
-        spi.write(footer);
-    }
+    public abstract void show() throws IOException;
 }
