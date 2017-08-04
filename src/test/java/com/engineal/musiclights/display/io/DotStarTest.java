@@ -103,13 +103,47 @@ public class DotStarTest {
         }
 
         instance.show();
-        
+
         for (int i = 0; i < numLEDs; i++) {
             assertEquals((byte) 0xFF, instance.data[4 * i]);
             assertEquals((byte) color.getBlue(), instance.data[(4 * i) + 1]);
             assertEquals((byte) color.getGreen(), instance.data[(4 * i) + 2]);
             assertEquals((byte) color.getRed(), instance.data[(4 * i) + 3]);
         }
+    }
+
+    /**
+     * Test that we have to have at least 1 LED
+     */
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testZeroLEDs() {
+        System.out.println("zero LEDs");
+        DotStar instance = new MockDotStar(0);
+        fail("Minimum LED count should be 1");
+    }
+
+    /**
+     * Test that we cannot set negative LEDs
+     */
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testNegativeIndex() {
+        int numLEDs = 150;
+        Color color = Color.WHITE;
+        DotStar instance = new MockDotStar(numLEDs);
+        instance.setPixelColor(-1, color);
+        fail("Index cannot be less than 0");
+    }
+
+    /**
+     * Test that we cannot set larger LEDs
+     */
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testLargerIndex() {
+        int numLEDs = 150;
+        Color color = Color.WHITE;
+        DotStar instance = new MockDotStar(numLEDs);
+        instance.setPixelColor(numLEDs + 1, color);
+        fail("Index cannot be less than 0");
     }
 
 }

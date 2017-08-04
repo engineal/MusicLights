@@ -28,7 +28,7 @@ public abstract class DotStar {
 
     public DotStar(int numLEDs) {
         if (numLEDs < 1) {
-            throw new IllegalArgumentException("You must have at least 1 LED");
+            throw new IndexOutOfBoundsException("You must have at least 1 LED");
         }
         data = new byte[numLEDs * 4];
         for (int i = 0; i < data.length; i += 4) {
@@ -56,7 +56,7 @@ public abstract class DotStar {
     public void setPixelColor(int index, Color color) {
         int offset = index * 4;
         if (offset < 0 || offset > data.length) {
-            throw new IllegalArgumentException("Index out of range");
+            throw new IndexOutOfBoundsException("Index out of range");
         }
 
         data[offset + 1] = (byte) (0xFF & color.getBlue());
