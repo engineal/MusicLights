@@ -15,34 +15,24 @@
  */
 package com.engineal.musiclights.display;
 
-import com.engineal.musiclights.display.io.DotStar;
-import java.io.IOException;
-import java.util.logging.Level;
+import java.awt.Color;
 import java.util.logging.Logger;
 
 /**
  *
  * @author Aaron Lucia
  */
-public class DotStarDisplay extends Display {
+public class FrameBuffer2D implements FrameBuffer {
 
-    private static final Logger LOG = Logger.getLogger(DotStarDisplay.class.getName());
+    private static final Logger LOG = Logger.getLogger(FrameBuffer2D.class.getName());
 
-    private final DotStar strip;
+    private final Color[][] buf;
 
-    /**
-     * Create a new DotStarDisplay
-     *
-     * @param strip The DotStar strip
-     * @param length The physical length of the display in m
-     */
-    public DotStarDisplay(DotStar strip, double length) {
-        super(length, 0, 0);
-        this.strip = strip;
+    public FrameBuffer2D(int width, int height) {
+        buf = new Color[width][height];
     }
 
-    @Override
-    protected FrameBuffer getFrameBuffer() {
-        return new FrameBuffer1D(strip.getNumLEDs());
+    public FrameBuffer2D(Color[][] buf) {
+        this.buf = buf;
     }
 }

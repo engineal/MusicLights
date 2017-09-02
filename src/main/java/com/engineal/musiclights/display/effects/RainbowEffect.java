@@ -13,52 +13,55 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.engineal.musiclights.effects;
+package com.engineal.musiclights.display.effects;
 
+import com.engineal.musiclights.display.FrameBuffer;
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  * Moving Rainbows
  *
  * @author Aaron Lucia
  */
-public class RainbowEffect extends Effect {
+public class RainbowEffect implements Effect {
+
+    private static final Logger LOG = Logger.getLogger(RainbowEffect.class.getName());
     
-    int position;
+    private int position;
     private final int segmentLength;
 
     /**
      *
      * @param segmentLength the length until the colors repeat
      */
-    public RainbowEffect(int segmentLength) {
+    public RainbowEffect(int segmentLength, double duration) {
         position = 0;
         this.segmentLength = segmentLength;
     }
 
     @Override
-    public boolean running() {
+    public boolean hasNext() {
         return true;
     }
 
     @Override
-    public Map getChanges() {
+    public void apply(FrameBuffer buffer) {
         Map<Integer, Color> m = new HashMap<>();
-        
+
         double frequency = 2 * Math.PI / segmentLength;
         for (int i = 0; i < 150; i++) {
-            int red = (int) (Math.sin(frequency*(i+position)) * 127 + 128);
-            int green = (int) (Math.sin(frequency*(i+position) + 2*Math.PI/3) * 127 + 128);
-            int blue = (int) (Math.sin(frequency*(i+position) + 4*Math.PI/3) * 127 + 128);
+            int red = (int) (Math.sin(frequency * (i + position)) * 127 + 128);
+            int green = (int) (Math.sin(frequency * (i + position) + 2 * Math.PI / 3) * 127 + 128);
+            int blue = (int) (Math.sin(frequency * (i + position) + 4 * Math.PI / 3) * 127 + 128);
             m.put(i, new Color(red, green, blue));
         }
-        return m;
     }
 
     @Override
-    public void advance() {
+    public void next() {
         position = (position + 1) % 150;
     }
 }

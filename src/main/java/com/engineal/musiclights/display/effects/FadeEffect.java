@@ -13,36 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.engineal.musiclights.display;
+package com.engineal.musiclights.display.effects;
 
-import com.engineal.musiclights.display.io.DotStar;
-import java.io.IOException;
-import java.util.logging.Level;
+import com.engineal.musiclights.display.FrameBuffer;
 import java.util.logging.Logger;
 
 /**
  *
  * @author Aaron Lucia
  */
-public class DotStarDisplay extends Display {
+public class FadeEffect implements Effect {
 
-    private static final Logger LOG = Logger.getLogger(DotStarDisplay.class.getName());
-
-    private final DotStar strip;
-
+    private static final Logger LOG = Logger.getLogger(FadeEffect.class.getName());
+    
     /**
-     * Create a new DotStarDisplay
-     *
-     * @param strip The DotStar strip
-     * @param length The physical length of the display in m
+     * Creates an effect that fades
      */
-    public DotStarDisplay(DotStar strip, double length) {
-        super(length, 0, 0);
-        this.strip = strip;
+    public FadeEffect(double duration) {
+
     }
 
     @Override
-    protected FrameBuffer getFrameBuffer() {
-        return new FrameBuffer1D(strip.getNumLEDs());
+    public boolean hasNext() {
+        return false;
+    }
+
+    @Override
+    public void apply(FrameBuffer buffer) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void next() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

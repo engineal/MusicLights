@@ -15,16 +15,18 @@
  */
 package com.engineal.musiclights.display;
 
+import com.engineal.musiclights.display.effects.Effect;
+import com.engineal.musiclights.display.effects.StillEffect;
 import com.engineal.musiclights.display.io.MockDotStar;
-import com.engineal.musiclights.effects.Effect;
-import com.engineal.musiclights.effects.StillEffect;
 import java.awt.Color;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -32,8 +34,7 @@ import static org.junit.Assert.*;
  */
 public class DotStarDisplayTest {
 
-    public DotStarDisplayTest() {
-    }
+    private static final Logger LOG = Logger.getLogger(DotStarDisplayTest.class.getName());
 
     @BeforeClass
     public static void setUpClass() {
@@ -41,6 +42,9 @@ public class DotStarDisplayTest {
 
     @AfterClass
     public static void tearDownClass() {
+    }
+
+    public DotStarDisplayTest() {
     }
 
     @Before
@@ -56,13 +60,13 @@ public class DotStarDisplayTest {
      */
     @Test
     public void testRunEffect() {
-        System.out.println("runEffect");
+        LOG.log(Level.INFO, "runEffect");
         int numLEDs = 150;
         MockDotStar strip = new MockDotStar(numLEDs);
-        DotStarDisplay instance = new DotStarDisplay(strip);
+        DotStarDisplay instance = new DotStarDisplay(strip, 5);
         Color color = new Color(63, 123, 255);
         Effect effect = new StillEffect(color);
-        instance.runEffect(effect, 100);
+        instance.applyEffect(effect, 0);
 
         byte[] data = strip.getData();
         for (int i = 0; i < numLEDs; i++) {
@@ -72,5 +76,4 @@ public class DotStarDisplayTest {
             assertEquals((byte) color.getRed(), data[(4 * i) + 3]);
         }
     }
-
 }

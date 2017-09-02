@@ -13,17 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.engineal.musiclights.effects;
+package com.engineal.musiclights.display.effects;
 
+import com.engineal.musiclights.display.FrameBuffer;
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Aaron Lucia
  */
-public class StillEffect extends Effect {
+public class StillEffect implements Effect {
+
+    private static final Logger LOG = Logger.getLogger(StillEffect.class.getName());
 
     private boolean running;
     private final Color color;
@@ -32,36 +36,27 @@ public class StillEffect extends Effect {
      *
      * @param color
      */
-    public StillEffect(Color color) {
+    public StillEffect(Color color, double duration) {
         running = true;
         this.color = color;
 
     }
 
     @Override
-    public boolean running() {
+    public boolean hasNext() {
         return running;
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
-    public Map<Integer, Color> getChanges() {
+    public void apply(FrameBuffer buffer) {
         Map<Integer, Color> m = new HashMap<>();
         for (int i = 0; i < 150; i++) {
             m.put(i, color);
         }
-        return m;
     }
-
-    /**
-     *
-     */
+    
     @Override
-    public void advance() {
+    public void next() {
         running = false;
     }
-
 }

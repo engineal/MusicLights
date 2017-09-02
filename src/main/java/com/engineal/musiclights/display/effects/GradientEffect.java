@@ -13,35 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.engineal.musiclights.effects;
+package com.engineal.musiclights.display.effects;
 
-import java.util.Map;
+import com.engineal.musiclights.display.FrameBuffer;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Aaron Lucia
  */
-public class FadeEffect extends Effect {
+public class GradientEffect implements Effect {
 
-    /**
-     * Creates an effect that fades
-     */
-    public FadeEffect() {
-        
+    private static final Logger LOG = Logger.getLogger(GradientEffect.class.getName());
+
+    @Override
+    public boolean hasNext() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public boolean running() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void apply(FrameBuffer buffer) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public Map getChanges() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void advance() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void next() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

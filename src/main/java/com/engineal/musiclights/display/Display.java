@@ -15,10 +15,70 @@
  */
 package com.engineal.musiclights.display;
 
+import com.engineal.musiclights.display.effects.Effect;
+
 /**
  *
  * @author Aaron Lucia
  */
 public abstract class Display {
-    
+
+    private final double length;
+    private final double width;
+    private final double height;
+
+    /**
+     *
+     * @param length
+     * @param width
+     * @param height
+     */
+    public Display(double length, double width, double height) {
+        this.length = length;
+        this.width = width;
+        this.height = height;
+
+    }
+
+    protected abstract FrameBuffer getFrameBuffer();
+
+    /**
+     * Apply the effect over duration
+     *
+     * @param effect
+     * @param duration The time in seconds to take for this 
+     */
+    public void applyEffect(Effect effect) {
+        while (effect.hasNext()) {
+            FrameBuffer buff = getFrameBuffer();
+
+            effect.apply(buff);
+
+            effect.next();
+        }
+    }
+
+    /**
+     *
+     * @return
+     */
+    public double getLength() {
+        return length;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public double getWidth() {
+        return width;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public double getHeight() {
+        return height;
+    }
 }

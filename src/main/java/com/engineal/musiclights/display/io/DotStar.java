@@ -63,6 +63,10 @@ public abstract class DotStar {
         data[offset + 2] = (byte) (0xFF & color.getGreen());
         data[offset + 3] = (byte) (0xFF & color.getRed());
     }
+    
+    public int getNumLEDs() {
+        return data.length / 4;
+    }
 
     public abstract void show() throws IOException;
 }

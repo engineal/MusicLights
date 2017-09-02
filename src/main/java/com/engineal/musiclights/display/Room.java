@@ -13,30 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.engineal.musiclights.effects;
+package com.engineal.musiclights.display;
 
-import java.awt.Color;
-import java.util.Map;
+import com.engineal.musiclights.display.effects.Effect;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Aaron Lucia
  */
-public abstract class Effect {
+public class Room {
+    
+    private static final Logger LOG = Logger.getLogger(Room.class.getName());
 
-    /**
-     * Defines an effect
-     */
-    public Effect() {
+    private final Set<Display> displays;
 
+    public Room() {
+        this.displays = new HashSet<>();
     }
     
-    /**
-     * @return if the effect should still be running
-     */
-    public abstract boolean running();
+    public void addDisplay(Display display) {
+        displays.add(display);
+    }
     
-    public abstract Map<Integer, Color> getChanges();
-    
-    public abstract void advance();
+    public void applyEffect(Effect effect) {
+        displays.stream().forEach(d -> d.applyEffect(effect));
+    }
 }
