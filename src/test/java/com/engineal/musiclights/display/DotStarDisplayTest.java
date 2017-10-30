@@ -66,7 +66,7 @@ public class DotStarDisplayTest {
         DotStarDisplay instance = new DotStarDisplay(strip, 5);
         Color color = new Color(63, 123, 255);
         Effect effect = new StillEffect(color);
-        instance.applyEffect(effect, 0);
+        instance.applyEffect(effect);
 
         byte[] data = strip.getData();
         for (int i = 0; i < numLEDs; i++) {

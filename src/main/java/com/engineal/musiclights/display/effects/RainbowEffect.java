@@ -15,10 +15,7 @@
  */
 package com.engineal.musiclights.display.effects;
 
-import com.engineal.musiclights.display.FrameBuffer;
 import java.awt.Color;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -37,30 +34,20 @@ public class RainbowEffect implements Effect {
      *
      * @param segmentLength the length until the colors repeat
      */
-    public RainbowEffect(int segmentLength, double duration) {
+    public RainbowEffect(int segmentLength) {
         position = 0;
         this.segmentLength = segmentLength;
     }
 
     @Override
-    public boolean hasNext() {
-        return true;
-    }
-
-    @Override
-    public void apply(FrameBuffer buffer) {
-        Map<Integer, Color> m = new HashMap<>();
-
+    public Color apply(int x) {
         double frequency = 2 * Math.PI / segmentLength;
-        for (int i = 0; i < 150; i++) {
-            int red = (int) (Math.sin(frequency * (i + position)) * 127 + 128);
-            int green = (int) (Math.sin(frequency * (i + position) + 2 * Math.PI / 3) * 127 + 128);
-            int blue = (int) (Math.sin(frequency * (i + position) + 4 * Math.PI / 3) * 127 + 128);
-            m.put(i, new Color(red, green, blue));
-        }
+        int red = (int) (Math.sin(frequency * (x + position)) * 127 + 128);
+        int green = (int) (Math.sin(frequency * (x + position) + 2 * Math.PI / 3) * 127 + 128);
+        int blue = (int) (Math.sin(frequency * (x + position) + 4 * Math.PI / 3) * 127 + 128);
+        return new Color(red, green, blue);
     }
 
-    @Override
     public void next() {
         position = (position + 1) % 150;
     }

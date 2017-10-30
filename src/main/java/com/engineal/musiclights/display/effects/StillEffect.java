@@ -15,10 +15,7 @@
  */
 package com.engineal.musiclights.display.effects;
 
-import com.engineal.musiclights.display.FrameBuffer;
 import java.awt.Color;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Logger;
 
 /**
@@ -29,34 +26,19 @@ public class StillEffect implements Effect {
 
     private static final Logger LOG = Logger.getLogger(StillEffect.class.getName());
 
-    private boolean running;
     private final Color color;
 
     /**
      *
      * @param color
      */
-    public StillEffect(Color color, double duration) {
-        running = true;
+    public StillEffect(Color color) {
         this.color = color;
 
     }
 
     @Override
-    public boolean hasNext() {
-        return running;
-    }
-
-    @Override
-    public void apply(FrameBuffer buffer) {
-        Map<Integer, Color> m = new HashMap<>();
-        for (int i = 0; i < 150; i++) {
-            m.put(i, color);
-        }
-    }
-    
-    @Override
-    public void next() {
-        running = false;
+    public Color apply(int x) {
+        return color;
     }
 }

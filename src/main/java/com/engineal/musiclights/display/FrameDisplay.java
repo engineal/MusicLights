@@ -16,36 +16,40 @@
 package com.engineal.musiclights.display;
 
 import com.engineal.musiclights.display.effects.Effect;
-import com.engineal.musiclights.display.io.DotStar;
+import com.engineal.musiclights.display.io.Panel2D;
+import java.awt.EventQueue;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 
 /**
  *
  * @author Aaron Lucia
  */
-public class DotStarDisplay extends Display {
+public class FrameDisplay extends Display {
 
-    private static final Logger LOG = Logger.getLogger(DotStarDisplay.class.getName());
+    private static final Logger LOG = Logger.getLogger(FrameDisplay.class.getName());
 
-    private final DotStar strip;
+    private final Panel2D panel;
     private final int length;
 
-    /**
-     * Create a new DotStarDisplay
-     *
-     * @param strip The DotStar strip
-     * @param length The physical length of the display in m
-     */
-    public DotStarDisplay(DotStar strip, double length) {
-        super(length, 0, 0);
-        this.strip = strip;
-        this.length = (int) length;
+    public FrameDisplay(double width, double height) {
+        super(0, width, height);
+        this.length = (int) width;
+        panel = new Panel2D((int) width, (int) height);
+        EventQueue.invokeLater(() -> {
+            JFrame frame = new JFrame("Music Lights");
+            frame.add(panel);
+            frame.pack();
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setVisible(true);
+        });
     }
 
     @Override
     public void applyEffect(Effect effect) {
         for (int i = 0; i < length; i++) {
-            strip.setPixelColor(i, effect.apply(i));
+            panel.setPixelColor(i, effect.apply(i));
         }
     }
+
 }

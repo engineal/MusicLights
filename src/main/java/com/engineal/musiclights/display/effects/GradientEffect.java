@@ -15,7 +15,7 @@
  */
 package com.engineal.musiclights.display.effects;
 
-import com.engineal.musiclights.display.FrameBuffer;
+import java.awt.Color;
 import java.util.logging.Logger;
 
 /**
@@ -27,17 +27,7 @@ public class GradientEffect implements Effect {
     private static final Logger LOG = Logger.getLogger(GradientEffect.class.getName());
 
     @Override
-    public boolean hasNext() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void apply(FrameBuffer buffer) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void next() {
+    public Color apply(int x) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

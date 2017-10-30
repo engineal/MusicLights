@@ -40,23 +40,12 @@ public abstract class Display {
 
     }
 
-    protected abstract FrameBuffer getFrameBuffer();
-
     /**
-     * Apply the effect over duration
+     * Apply the effect to this display
      *
      * @param effect
-     * @param duration The time in seconds to take for this 
      */
-    public void applyEffect(Effect effect) {
-        while (effect.hasNext()) {
-            FrameBuffer buff = getFrameBuffer();
-
-            effect.apply(buff);
-
-            effect.next();
-        }
-    }
+    public abstract void applyEffect(Effect effect);
 
     /**
      *

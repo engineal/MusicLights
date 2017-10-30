@@ -15,10 +15,11 @@
  */
 package com.engineal.musiclights;
 
-import com.engineal.musiclights.display.DotStarDisplay;
+import com.engineal.musiclights.display.Display;
+import com.engineal.musiclights.display.FrameDisplay;
 import com.engineal.musiclights.display.effects.RainbowEffect;
-import com.engineal.musiclights.display.io.SPIDotStar;
-import java.io.IOException;
+import com.engineal.musiclights.display.effects.StillEffect;
+import java.awt.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,11 +38,8 @@ public class MusicLights {
      */
     public static void main(String[] args) {
         LOG.log(Level.INFO, "Hello World!");
-        try {
-            DotStarDisplay display = new DotStarDisplay(new SPIDotStar(150), 5);
-            display.applyEffect(new RainbowEffect(30), 1);
-        } catch (IOException ex) {
-            LOG.log(Level.SEVERE, "Welp, something happened", ex);
-        }
+        Display display = new FrameDisplay(500, 500);
+        display.applyEffect(new RainbowEffect(500/2));
+        //display.applyEffect(new RainbowEffect(30));
     }
 }

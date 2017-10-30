@@ -15,7 +15,8 @@
  */
 package com.engineal.musiclights.display.effects;
 
-import com.engineal.musiclights.display.FrameBuffer;
+import java.awt.Color;
+
 
 /**
  * An effect should be independent of display resolution (or size), number of
@@ -25,12 +26,5 @@ import com.engineal.musiclights.display.FrameBuffer;
  */
 public interface Effect {
 
-    /**
-     * @return if the effect should still be running
-     */
-    public abstract boolean hasNext();
-
-    public abstract void apply(FrameBuffer buffer);
-
-    public abstract void next();
+    public abstract Color apply(int x);
 }

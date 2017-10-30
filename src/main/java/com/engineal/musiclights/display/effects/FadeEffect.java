@@ -15,7 +15,7 @@
  */
 package com.engineal.musiclights.display.effects;
 
-import com.engineal.musiclights.display.FrameBuffer;
+import java.awt.Color;
 import java.util.logging.Logger;
 
 /**
@@ -29,22 +29,12 @@ public class FadeEffect implements Effect {
     /**
      * Creates an effect that fades
      */
-    public FadeEffect(double duration) {
+    public FadeEffect() {
 
     }
 
     @Override
-    public boolean hasNext() {
-        return false;
-    }
-
-    @Override
-    public void apply(FrameBuffer buffer) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void next() {
+    public Color apply(int x) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }
