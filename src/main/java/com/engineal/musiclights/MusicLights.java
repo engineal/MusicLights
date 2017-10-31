@@ -18,10 +18,13 @@ package com.engineal.musiclights;
 import com.engineal.musiclights.display.Display;
 import com.engineal.musiclights.display.FrameDisplay;
 import com.engineal.musiclights.display.effects.RainbowEffect;
-import com.engineal.musiclights.display.effects.StillEffect;
-import java.awt.Color;
+import com.engineal.musiclights.server.DiscoveryServer;
+import com.engineal.musiclights.server.WebSocketServer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.webbitserver.WebServer;
+import org.webbitserver.WebServers;
+import org.webbitserver.handler.StaticFileHandler;
 
 /**
  *
@@ -38,8 +41,23 @@ public class MusicLights {
      */
     public static void main(String[] args) {
         LOG.log(Level.INFO, "Hello World!");
+        WebServer webServer = WebServers.createWebServer(8080)
+                        .add("/hellowebsocket", new WebSocketServer())
+                        .add(new StaticFileHandler("web"));
+        webServer.start();
+        LOG.log(Level.INFO, "Server running at {0}", webServer.getUri());
+
+        DiscoveryServer discoveryServer = new DiscoveryServer(8888);
+        discoveryServer.start();
+        
         Display display = new FrameDisplay(500, 500);
-        display.applyEffect(new RainbowEffect(500/2));
+        display.applyEffect(new RainbowEffect(500 / 2));
         //display.applyEffect(new RainbowEffect(30));
+        /*try {
+            DotStarDisplay display = new DotStarDisplay(new SPIDotStar(150));
+            display.runEffect(new RainbowEffect(30), 5000);
+        } catch (IOException ex) {
+            LOG.log(Level.SEVERE, null, ex);
+        }*/
     }
 }
