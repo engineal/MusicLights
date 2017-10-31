@@ -15,13 +15,8 @@
  */
 package com.engineal.musiclights;
 
-import com.engineal.musiclights.compute.Compute;
-import com.engineal.musiclights.display.DotStarDisplay;
-import com.engineal.musiclights.display.io.SPIDotStar;
-import com.engineal.musiclights.display.effects.RainbowEffect;
+import com.engineal.musiclights.server.DiscoveryServer;
 import com.engineal.musiclights.server.WebSocketServer;
-import java.io.File;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.webbitserver.WebServer;
@@ -42,20 +37,21 @@ public class MusicLights {
      * @param args
      */
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        LOG.log(Level.INFO, "Hello World!");
         WebServer webServer = WebServers.createWebServer(8080)
                 .add("/hellowebsocket", new WebSocketServer())
                 .add(new StaticFileHandler("web"));
         webServer.start();
-        System.out.println("Server running at " + webServer.getUri());
+        LOG.log(Level.INFO, "Server running at {0}", webServer.getUri());
         
-        Compute compute = new Compute();
+        DiscoveryServer discoveryServer = new DiscoveryServer(8888);
+        discoveryServer.start();
+        
         /*try {
             DotStarDisplay display = new DotStarDisplay(new SPIDotStar(150));
             display.runEffect(new RainbowEffect(30), 5000);
         } catch (IOException ex) {
             LOG.log(Level.SEVERE, null, ex);
         }*/
-        compute.stop();
     }
 }

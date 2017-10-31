@@ -15,6 +15,7 @@
  */
 package com.engineal.musiclights.server;
 
+import java.util.logging.Logger;
 import org.webbitserver.WebSocketConnection;
 import org.webbitserver.WebSocketHandler;
 
@@ -23,6 +24,8 @@ import org.webbitserver.WebSocketHandler;
  * @author Aaron Lucia
  */
 public class WebSocketServer implements WebSocketHandler {
+
+    private static final Logger LOG = Logger.getLogger(WebSocketServer.class.getName());
 
     private int connectionCount;
 
