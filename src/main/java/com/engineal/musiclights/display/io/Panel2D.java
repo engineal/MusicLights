@@ -18,7 +18,6 @@ package com.engineal.musiclights.display.io;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.util.logging.Logger;
 import javax.swing.JPanel;
 
 /**
@@ -28,7 +27,6 @@ import javax.swing.JPanel;
 public class Panel2D extends JPanel {
 
     private static final long serialVersionUID = 1L;
-    private static final Logger LOG = Logger.getLogger(Panel2D.class.getName());
     
     protected final Color[] data; // pixel data
 

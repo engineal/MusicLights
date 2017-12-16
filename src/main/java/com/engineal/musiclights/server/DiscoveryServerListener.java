@@ -13,18 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.engineal.musiclights.display.effects;
+package com.engineal.musiclights.server;
 
-import java.awt.Color;
+import java.net.InetAddress;
 
 /**
  *
  * @author Aaron Lucia
  */
-public class GradientEffect implements Effect {
+public interface DiscoveryServerListener {
 
-    @Override
-    public Color apply(int x) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+    public void peerFound(InetAddress address);
 }

@@ -16,7 +16,6 @@
 package com.engineal.musiclights.display.effects;
 
 import java.awt.Color;
-import java.util.logging.Logger;
 
 /**
  * Moving Rainbows
@@ -24,8 +23,6 @@ import java.util.logging.Logger;
  * @author Aaron Lucia
  */
 public class RainbowEffect implements Effect {
-
-    private static final Logger LOG = Logger.getLogger(RainbowEffect.class.getName());
     
     private int position;
     private final int segmentLength;

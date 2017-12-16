@@ -18,7 +18,6 @@ package com.engineal.musiclights.display;
 import com.engineal.musiclights.display.effects.Effect;
 import com.engineal.musiclights.display.io.Panel2D;
 import java.awt.EventQueue;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 
 /**
@@ -26,8 +25,6 @@ import javax.swing.JFrame;
  * @author Aaron Lucia
  */
 public class FrameDisplay extends Display {
-
-    private static final Logger LOG = Logger.getLogger(FrameDisplay.class.getName());
 
     private final Panel2D panel;
     private final int length;
@@ -50,6 +47,7 @@ public class FrameDisplay extends Display {
         for (int i = 0; i < length; i++) {
             panel.setPixelColor(i, effect.apply(i));
         }
+        panel.showChanges();
     }
 
 }

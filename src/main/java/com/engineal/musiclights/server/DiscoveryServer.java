@@ -21,12 +21,12 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Set;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
@@ -34,23 +34,31 @@ import java.util.logging.Logger;
  */
 public class DiscoveryServer {
 
-    private static final Logger LOG = Logger.getLogger(DiscoveryServer.class.getName());
+    private static final Logger log = LogManager.getLogger(DiscoveryServer.class);
     private static final String BROADCAST_REQUEST = "MUSICLIGHTS_DISCOVERY_REQUEST";
     private static final String BROADCAST_RESPONSE = "MUSICLIGHTS_DISCOVERY_RESPONSE";
 
     private final Thread requestThread;
     private final Thread responseThread;
 
-    private final Collection<InetAddress> peers;
+    private final Set<DiscoveryServerListener> listeners;
 
     public DiscoveryServer(int port) {
-        this.peers = Collections.synchronizedSet(new HashSet<>());
         requestThread = new Thread(new RequestThread());
         responseThread = new Thread(new ResponseThread(port));
+        listeners = Collections.synchronizedSet(new HashSet<>());
     }
-    
-    public Collection<InetAddress> getPeers() {
-        return Collections.unmodifiableCollection(peers);
+
+    public boolean addDiscoveryServerListener(DiscoveryServerListener listener) {
+        return listeners.add(listener);
+    }
+
+    public boolean removeDiscoveryServerListener(DiscoveryServerListener listener) {
+        return listeners.remove(listener);
+    }
+
+    private void notifyListeners(InetAddress address) {
+        listeners.stream().forEach(listener -> listener.peerFound(address));
     }
 
     public void start() {
@@ -77,9 +85,9 @@ public class DiscoveryServer {
                 try {
                     DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, InetAddress.getByName("255.255.255.255"), 8888);
                     socket.send(sendPacket);
-                    LOG.log(Level.INFO, "Request packet sent to: 255.255.255.255 (DEFAULT)");
+                    log.debug("Request packet sent to: 255.255.255.255 (DEFAULT)");
                 } catch (IOException ex) {
-                    LOG.log(Level.SEVERE, null, ex);
+                    log.error("Exception while trying to send request", ex);
                 }
 
                 // Broadcast the message over all the network interfaces
@@ -102,18 +110,18 @@ public class DiscoveryServer {
                             DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, broadcast, 8888);
                             socket.send(sendPacket);
                         } catch (IOException ex) {
-                            LOG.log(Level.SEVERE, null, ex);
+                            log.error("Exception while trying to send request", ex);
                         }
 
-                        LOG.log(Level.INFO, "Request packet sent to: {0}; Interface: {1}", new Object[]{broadcast.getHostAddress(), networkInterface.getDisplayName()});
+                        log.debug("Request packet sent to: " + broadcast.getHostAddress() + "; Interface: " + networkInterface.getDisplayName());
                     }
                 }
 
-                LOG.log(Level.INFO, "Done looping over all network interfaces. Now waiting for replies!");
+                log.info("Done looping over all network interfaces. Now waiting for replies!");
 
                 while (!Thread.interrupted()) {
                     //Wait for a response
-                    byte[] recvBuf = new byte[15000];
+                    byte[] recvBuf = new byte[128];
                     DatagramPacket receivePacket = new DatagramPacket(recvBuf, recvBuf.length);
                     socket.receive(receivePacket);
 
@@ -121,20 +129,20 @@ public class DiscoveryServer {
                     String message = new String(receivePacket.getData()).trim();
                     if (message.equals(BROADCAST_RESPONSE)) {
                         //We have a response
-                        LOG.log(Level.INFO, "Broadcast response from server: {0}", receivePacket.getAddress().getHostAddress());
-                        peers.add(receivePacket.getAddress());
+                        log.debug("Broadcast response from server: " + receivePacket.getAddress().getHostAddress());
+                        notifyListeners(receivePacket.getAddress());
                     }
                 }
             } catch (IOException ex) {
-                LOG.log(Level.SEVERE, null, ex);
+                log.error("Exception in request thread", ex);
             }
         }
     }
 
     private class ResponseThread implements Runnable {
-        
+
         private final int port;
-        
+
         ResponseThread(int port) {
             this.port = port;
         }
@@ -144,31 +152,31 @@ public class DiscoveryServer {
             //Keep a socket open to listen to all the UDP trafic that is destined for this port
             try (DatagramSocket socket = new DatagramSocket(port)) {
                 socket.setBroadcast(true);
-                LOG.log(Level.INFO, "Ready to receive broadcast packets!");
+                log.info("Ready to receive broadcast packets!");
 
                 while (!Thread.interrupted()) {
                     //Receive a packet
-                    byte[] recvBuf = new byte[15000];
+                    byte[] recvBuf = new byte[128];
                     DatagramPacket receivePacket = new DatagramPacket(recvBuf, recvBuf.length);
                     socket.receive(receivePacket);
 
                     //Packet received
                     String message = new String(receivePacket.getData()).trim();
                     if (message.equals(BROADCAST_REQUEST)) {
-                        LOG.log(Level.INFO, "Broadcast request received from: {0}", receivePacket.getAddress().getHostAddress());
-                        peers.add(receivePacket.getAddress());
-                        
+                        log.debug("Broadcast request received from: " + receivePacket.getAddress().getHostAddress());
+                        notifyListeners(receivePacket.getAddress());
+
                         byte[] sendData = BROADCAST_RESPONSE.getBytes();
 
                         //Send a response
                         DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, receivePacket.getAddress(), receivePacket.getPort());
                         socket.send(sendPacket);
 
-                        LOG.log(Level.INFO, "Sent packet to: {0}", sendPacket.getAddress().getHostAddress());
+                        log.debug("Sent packet to: " + sendPacket.getAddress().getHostAddress());
                     }
                 }
             } catch (IOException ex) {
-                LOG.log(Level.SEVERE, null, ex);
+                log.error("Exception in response thread", ex);
             }
         }
     }

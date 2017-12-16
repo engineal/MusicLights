@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration xmlns="http://logging.apache.org/log4j/2.0/config" status="INFO" name="log4j2-config" packages="com.codahale.metrics.log4j2">
+    <Appenders>
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5p ${hostName} [%15.15t] %-40.40c{1.} | %m%n%ex"/>
+        </Console>
+        <MetricsAppender name="metrics" registryName="shared-metrics-registry"/>
+    </Appenders>
+    <Loggers>
+        <Logger name="com.engineal.musiclights" level="DEBUG" />
+        <Logger name="org.springframework" level="WARN" />
+        <Logger name="org.apache" level="WARN" />
+        <Root level="INFO">
+            <AppenderRef ref="STDOUT"/>
+            <AppenderRef ref="metrics" />
+        </Root>
+    </Loggers>
+</Configuration>

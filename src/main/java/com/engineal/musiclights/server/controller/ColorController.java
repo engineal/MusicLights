@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Aaron Lucia.
+ * Copyright 2017 Pivotal Software, Inc..
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,18 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.engineal.musiclights.display.effects;
+package com.engineal.musiclights.server.controller;
 
+import com.engineal.musiclights.display.Display;
+import com.engineal.musiclights.display.effects.StillEffect;
 import java.awt.Color;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.stereotype.Controller;
 
 /**
  *
  * @author Aaron Lucia
  */
-public class GradientEffect implements Effect {
-
-    @Override
-    public Color apply(int x) {
-        throw new UnsupportedOperationException("Not supported yet.");
+@Controller
+public class ColorController {
+    
+    @Autowired
+    private Display display;
+    
+    @MessageMapping("/color")
+    public void setColor(Color color) {
+        display.applyEffect(new StillEffect(color));
     }
 }

@@ -18,15 +18,12 @@ package com.engineal.musiclights.display;
 import com.engineal.musiclights.display.effects.Effect;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Logger;
 
 /**
  *
  * @author Aaron Lucia
  */
 public class Room {
-    
-    private static final Logger LOG = Logger.getLogger(Room.class.getName());
 
     private final Set<Display> displays;
 

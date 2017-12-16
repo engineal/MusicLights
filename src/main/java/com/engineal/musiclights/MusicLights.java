@@ -15,24 +15,23 @@
  */
 package com.engineal.musiclights;
 
-import com.engineal.musiclights.display.Display;
-import com.engineal.musiclights.display.FrameDisplay;
-import com.engineal.musiclights.display.effects.RainbowEffect;
-import com.engineal.musiclights.server.DiscoveryServer;
-import com.engineal.musiclights.server.WebSocketServer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.webbitserver.WebServer;
-import org.webbitserver.WebServers;
-import org.webbitserver.handler.StaticFileHandler;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.health.HealthCheckRegistry;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 
 /**
  *
  * @author Aaron Lucia
  */
+@SpringBootApplication
 public class MusicLights {
 
-    private static final Logger LOG = Logger.getLogger(MusicLights.class.getName());
+    private static final Logger log = LogManager.getLogger(MusicLights.class);
+    private static final MetricRegistry metrics = new MetricRegistry();
+    private static final HealthCheckRegistry healthchecks = new HealthCheckRegistry();
 
     /**
      * Begin the program
@@ -40,24 +39,16 @@ public class MusicLights {
      * @param args
      */
     public static void main(String[] args) {
-        LOG.log(Level.INFO, "Hello World!");
-        WebServer webServer = WebServers.createWebServer(8080)
-                        .add("/hellowebsocket", new WebSocketServer())
-                        .add(new StaticFileHandler("web"));
-        webServer.start();
-        LOG.log(Level.INFO, "Server running at {0}", webServer.getUri());
+        log.info("Starting MusicLights!");
+        new SpringApplicationBuilder(MusicLights.class)
+                .headless(false).run(args);
+    }
 
-        DiscoveryServer discoveryServer = new DiscoveryServer(8888);
-        discoveryServer.start();
-        
-        Display display = new FrameDisplay(500, 500);
-        display.applyEffect(new RainbowEffect(500 / 2));
-        //display.applyEffect(new RainbowEffect(30));
-        /*try {
-            DotStarDisplay display = new DotStarDisplay(new SPIDotStar(150));
-            display.runEffect(new RainbowEffect(30), 5000);
-        } catch (IOException ex) {
-            LOG.log(Level.SEVERE, null, ex);
-        }*/
+    public static MetricRegistry getMetricRegistry() {
+        return metrics;
+    }
+
+    public static HealthCheckRegistry getHealthCheckRegistry() {
+        return healthchecks;
     }
 }

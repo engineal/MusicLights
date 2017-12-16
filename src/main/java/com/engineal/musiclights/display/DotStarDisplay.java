@@ -17,15 +17,12 @@ package com.engineal.musiclights.display;
 
 import com.engineal.musiclights.display.effects.Effect;
 import com.engineal.musiclights.display.io.DotStar;
-import java.util.logging.Logger;
 
 /**
  *
  * @author Aaron Lucia
  */
 public class DotStarDisplay extends Display {
-
-    private static final Logger LOG = Logger.getLogger(DotStarDisplay.class.getName());
 
     private final DotStar strip;
     private final int length;

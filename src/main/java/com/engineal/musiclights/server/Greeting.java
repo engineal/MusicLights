@@ -15,21 +15,21 @@
  */
 package com.engineal.musiclights.server;
 
-import org.webbitserver.HttpControl;
-import org.webbitserver.HttpHandler;
-import org.webbitserver.HttpRequest;
-import org.webbitserver.HttpResponse;
-
 /**
  *
  * @author Aaron Lucia
  */
-public class RESTServer implements HttpHandler {
+public class Greeting {
+    private String content;
 
-    @Override
-    public void handleHttpRequest(HttpRequest request, HttpResponse response, HttpControl control) throws Exception {
-        response.header("Content-type", "text/html")
-            .content("<html><body>Hello world!</body></html>")
-            .end();
+    public Greeting() {
+    }
+
+    public Greeting(String content) {
+        this.content = content;
+    }
+
+    public String getContent() {
+        return content;
     }
 }

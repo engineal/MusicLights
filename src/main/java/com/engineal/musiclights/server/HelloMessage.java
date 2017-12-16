@@ -13,18 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.engineal.musiclights.display.effects;
-
-import java.awt.Color;
+package com.engineal.musiclights.server;
 
 /**
  *
  * @author Aaron Lucia
  */
-public class GradientEffect implements Effect {
+public class HelloMessage {
+    private String name;
 
-    @Override
-    public Color apply(int x) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public HelloMessage() {
+    }
+
+    public HelloMessage(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

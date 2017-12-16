@@ -16,15 +16,12 @@
 package com.engineal.musiclights.display.effects;
 
 import java.awt.Color;
-import java.util.logging.Logger;
 
 /**
  *
  * @author Aaron Lucia
  */
 public class StillEffect implements Effect {
-
-    private static final Logger LOG = Logger.getLogger(StillEffect.class.getName());
 
     private final Color color;
 
