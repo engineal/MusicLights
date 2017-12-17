@@ -24,7 +24,7 @@ import java.awt.Color;
 public class GradientEffect implements Effect {
 
     @Override
-    public Color apply(int x) {
+    public Color apply(double x) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }

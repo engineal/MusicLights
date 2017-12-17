@@ -17,12 +17,17 @@ package com.engineal.musiclights.display;
 
 import com.engineal.musiclights.display.effects.Effect;
 import com.engineal.musiclights.display.io.DotStar;
+import java.io.IOException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
  * @author Aaron Lucia
  */
 public class DotStarDisplay extends Display {
+    
+    private static final Logger log = LogManager.getLogger(DotStarDisplay.class);
 
     private final DotStar strip;
     private final int length;
@@ -41,8 +46,14 @@ public class DotStarDisplay extends Display {
 
     @Override
     public void applyEffect(Effect effect) {
-        for (int i = 0; i < length; i++) {
-            strip.setPixelColor(i, effect.apply(i));
+        double resolution = length / strip.getNumLEDs();
+        for (int i = 0; i < strip.getNumLEDs(); i++) {
+            strip.setPixelColor(i, effect.apply(i * resolution));
+        }
+        try {
+            strip.show();
+        } catch (IOException ex) {
+            log.error(ex);
         }
     }
 }

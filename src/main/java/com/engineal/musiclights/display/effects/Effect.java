@@ -26,5 +26,5 @@ import java.awt.Color;
  */
 public interface Effect {
 
-    public abstract Color apply(int x);
+    public abstract Color apply(double x);
 }

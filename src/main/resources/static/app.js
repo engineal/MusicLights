@@ -57,9 +57,9 @@ function sendName() {
 
 function sendColor() {
     stompClient.send("/app/color", {}, JSON.stringify({
-        'red': parseFloat($("#color").val()),
-        'green': parseFloat($("#color").val()),
-        'blue': parseFloat($("#color").val()),
+        'red': parseFloat($("#color-r").val()),
+        'green': parseFloat($("#color-g").val()),
+        'blue': parseFloat($("#color-b").val()),
         "alpha": 255
     }));
 }
@@ -81,7 +81,7 @@ $(function () {
     $("#send").click(function () {
         sendName();
     });
-    $("#send-color").click(function () {
+    $("input[type=range]").on('change', function(){
         sendColor();
     });
 });

@@ -37,7 +37,7 @@ public class RainbowEffect implements Effect {
     }
 
     @Override
-    public Color apply(int x) {
+    public Color apply(double x) {
         double frequency = 2 * Math.PI / segmentLength;
         int red = (int) (Math.sin(frequency * (x + position)) * 127 + 128);
         int green = (int) (Math.sin(frequency * (x + position) + 2 * Math.PI / 3) * 127 + 128);

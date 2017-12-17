@@ -35,7 +35,7 @@ public class StillEffect implements Effect {
     }
 
     @Override
-    public Color apply(int x) {
+    public Color apply(double x) {
         return color;
     }
 }
