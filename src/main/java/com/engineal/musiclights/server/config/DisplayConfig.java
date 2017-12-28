@@ -18,6 +18,10 @@ package com.engineal.musiclights.server.config;
 import com.engineal.musiclights.display.Display;
 import com.engineal.musiclights.display.DotStarDisplay;
 import com.engineal.musiclights.display.FrameDisplay;
+import com.engineal.musiclights.display.io.DotStar;
+import com.engineal.musiclights.display.io.SPIDotStar;
+import java.io.IOException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,12 +36,15 @@ public class DisplayConfig {
     @Bean
     @ConditionalOnProperty(name = "display", havingValue = "frame", matchIfMissing = true)
     public Display frameDisplay() {
-        return new FrameDisplay(500, 700);
+        return new FrameDisplay(.3, .01, 44.069, 100);
     }
     
     @Bean
     @ConditionalOnProperty(name = "display", havingValue = "dotstar")
-    public Display dotStarDisplay() {
-        return new DotStarDisplay(null, 150);
+    public Display dotStarDisplay(
+            @Value("${display.dotstar.length}") int dotstarLength)
+            throws IOException {
+        DotStar spi = new SPIDotStar(dotstarLength);
+        return new DotStarDisplay(spi, 150);
     }
 }

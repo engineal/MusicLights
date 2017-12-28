@@ -30,7 +30,7 @@ public class DotStarDisplay extends Display {
     private static final Logger log = LogManager.getLogger(DotStarDisplay.class);
 
     private final DotStar strip;
-    private final int length;
+    private final double length;
 
     /**
      * Create a new DotStarDisplay
@@ -41,14 +41,14 @@ public class DotStarDisplay extends Display {
     public DotStarDisplay(DotStar strip, double length) {
         super(length, 0, 0);
         this.strip = strip;
-        this.length = (int) length;
+        this.length = length;
     }
 
     @Override
     public void applyEffect(Effect effect) {
-        double resolution = length / strip.getNumLEDs();
+        double resolution = strip.getNumLEDs() / length;
         for (int i = 0; i < strip.getNumLEDs(); i++) {
-            strip.setPixelColor(i, effect.apply(i * resolution));
+            strip.setPixelColor(i, effect.apply(i / resolution));
         }
         try {
             strip.show();

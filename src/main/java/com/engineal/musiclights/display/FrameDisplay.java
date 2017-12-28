@@ -17,6 +17,7 @@ package com.engineal.musiclights.display;
 
 import com.engineal.musiclights.display.effects.Effect;
 import com.engineal.musiclights.display.io.Panel2D;
+import java.awt.Color;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 
@@ -27,12 +28,18 @@ import javax.swing.JFrame;
 public class FrameDisplay extends Display {
 
     private final Panel2D panel;
-    private final int length;
+    private final double resolution;
+    private final double scaling;
+    
+    public FrameDisplay(double width, double height, double resolution) {
+        this(width, height, resolution, 1);
+    }
 
-    public FrameDisplay(double width, double height) {
+    public FrameDisplay(double width, double height, double resolution, double scaling) {
         super(0, width, height);
-        this.length = (int) width;
-        panel = new Panel2D((int) width, (int) height);
+        this.resolution = resolution;
+        this.scaling = scaling;
+        panel = new Panel2D((int) (width * resolution * scaling), (int) (height * resolution * scaling));
         EventQueue.invokeLater(() -> {
             JFrame frame = new JFrame("Music Lights");
             frame.add(panel);
@@ -44,10 +51,15 @@ public class FrameDisplay extends Display {
 
     @Override
     public void applyEffect(Effect effect) {
-        for (int i = 0; i < length; i++) {
-            panel.setPixelColor(i, effect.apply(i));
+        int x = 0;
+        Color xcolor = effect.apply(x);
+        for (int i = 0; i < panel.getWidth(); i++) {
+            if ((int) (i / scaling) != x) {
+                x = (int) (i / scaling);
+                xcolor = effect.apply(x);
+            }
+            panel.setPixelColor(i, xcolor);
         }
         panel.showChanges();
     }
-
 }

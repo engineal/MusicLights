@@ -60,7 +60,13 @@ function sendColor() {
         'red': parseFloat($("#color-r").val()),
         'green': parseFloat($("#color-g").val()),
         'blue': parseFloat($("#color-b").val()),
-        "alpha": 255
+        'alpha': 255
+    }));
+}
+
+function sendEffect() {
+    stompClient.send("/app/effect", {}, JSON.stringify({
+        'type': '.ChristmasEffect'
     }));
 }
 
@@ -83,5 +89,8 @@ $(function () {
     });
     $("input[type=range]").on('change', function(){
         sendColor();
+    });
+    $("#christmas").click(function () {
+        sendEffect();
     });
 });
