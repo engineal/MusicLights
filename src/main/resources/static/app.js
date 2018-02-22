@@ -15,16 +15,18 @@
  */
 
 var stompClient = null;
+var FRAME_PATTERN = /^frame$/i;
+var SINGLE_PATTERN = /^(\d+)=#([\da-f]{6})$/i;
+var RANGE_PATTERN = /^\[(\d+)-(\d+)\]=#([\da-f]{6})$/i;
 
 function setConnected(connected) {
     $("#connect").prop("disabled", connected);
     $("#disconnect").prop("disabled", !connected);
     if (connected) {
-        $("#conversation").show();
+        $("#controls").show();
     } else {
-        $("#conversation").hide();
+        $("#controls").hide();
     }
-    $("#greetings").html("");
 }
 
 function connect() {
@@ -33,9 +35,9 @@ function connect() {
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/greetings', function (greeting) {
-            showGreeting(JSON.parse(greeting.body).content);
-        });
+        //stompClient.subscribe('/topic/greetings', function (greeting) {
+        //    showGreeting(JSON.parse(greeting.body).content);
+        //});
     }, function (message) {
         if (message.includes("Whoops! Lost connection")) {
             disconnect();
@@ -49,10 +51,6 @@ function disconnect() {
     }
     setConnected(false);
     console.log("Disconnected");
-}
-
-function sendName() {
-    stompClient.send("/app/hello", {}, JSON.stringify({'name': $("#name").val()}));
 }
 
 function sendColor() {
@@ -70,8 +68,47 @@ function sendEffect() {
     }));
 }
 
-function showGreeting(message) {
-    $("#greetings").append("<tr><td>" + message + "</td></tr>");
+function parseCommand(command, frames) {
+    var frameMatch = FRAME_PATTERN.exec(command);
+    var singleMatch = SINGLE_PATTERN.exec(command);
+    var rangeMatch = RANGE_PATTERN.exec(command);
+    
+    var currentFrame = frames.length - 1;
+    if (frameMatch) {
+        frames.push([]);
+        console.log("Start of frame " + (frames.length - 1));
+    } else if (singleMatch) {
+        var location = singleMatch[1];
+        var c = singleMatch[2];
+        frames[currentFrame][location] = c;
+        console.log("frames[" + currentFrame + "][" + location + "]=" + c);
+    } else if (rangeMatch) {
+        var from = rangeMatch[1];
+        var to = rangeMatch[2];
+        var c = rangeMatch[3];
+        for (var i = from; i <= to; i++) {
+            frames[currentFrame][i] = c;
+        }
+        console.log("frames[" + currentFrame + "][" + from + "-" + to + "]=" + c);
+    } else {
+        console.log("Cannot parse line: " + command);
+    }
+}
+
+function sendCommands() {
+    var frames = [[]];
+    var lines = $('#commands').val().split('\n');
+    for (var i = 0; i < lines.length; ++i) {
+        var command = lines[i].replace(/\s+/g, "");
+        if (command) {
+            parseCommand(command, frames);
+        }
+    }
+    console.log(frames);
+    
+    /*stompClient.send("/app/animate", {}, JSON.stringify({
+        'type': '.ChristmasEffect'
+    }));*/
 }
 
 $(function () {
@@ -84,13 +121,28 @@ $(function () {
     $("#disconnect").click(function () {
         disconnect();
     });
-    $("#send").click(function () {
-        sendName();
-    });
     $("input[type=range]").on('change', function(){
         sendColor();
     });
     $("#christmas").click(function () {
         sendEffect();
     });
+    $("#play").click(function () {
+        sendCommands();
+    });
+    $("#upload").change(function () {
+        if (!window.File || !window.FileReader || !window.FileList || !window.Blob) {
+            alert('The File APIs are not fully supported in this browser.');
+            return;
+        }
+        if (this.files[0]) {
+            var file = this.files[0];
+            var fr = new FileReader();
+            fr.onload = function() {
+                $('#commands').val(fr.result);
+            };
+            fr.readAsText(file);
+        }
+    });
+    connect();
 });

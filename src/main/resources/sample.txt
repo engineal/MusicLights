@@ -1,0 +1,35 @@
+[0-149] = #000000
+
+rate = 1 frame/sec
+frame
+1 = #FFFFFF
+frame
+1 = #000000
+2 = #FFFFFF
+frame
+2 = #000000
+3 = #FFFFFF
+frame
+3 = #000000
+4 = #FFFFFF
+frame
+4 = #000000
+5 = #FFFFFF
+frame
+5 = #000000
+6 = #FFFFFF
+frame
+6 = #000000
+7 = #FFFFFF
+frame
+7 = #000000
+8 = #FFFFFF
+frame
+8 = #000000
+9 = #FFFFFF
+frame
+9 = #000000
+10 = #FFFFFF
+frame
+10 = #000000
+11 = #FFFFFF

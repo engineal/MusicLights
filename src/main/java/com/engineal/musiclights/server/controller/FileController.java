@@ -15,10 +15,10 @@
  */
 package com.engineal.musiclights.server.controller;
 
-import com.engineal.musiclights.server.Greeting;
-import com.engineal.musiclights.server.HelloMessage;
+import com.engineal.musiclights.display.Display;
+import com.engineal.musiclights.display.animations.FrameAnimation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
 /**
@@ -26,20 +26,13 @@ import org.springframework.stereotype.Controller;
  * @author Aaron Lucia
  */
 @Controller
-public class PeersController {
+public class FileController {
     
-    /*private final PeerManager peers;
-
-    public PeersController(PeerManager peers) {
-        this.peers = peers;
-        
-        peers.addPeerListener((Peer) -> getPeers());
-    }*/
+    @Autowired
+    private Display display;
     
-    @MessageMapping("/hello")
-    @SendTo("/topic/greetings")
-    public Greeting greeting(HelloMessage message) throws Exception {
-        Thread.sleep(1000); // simulated delay
-        return new Greeting("Hello, " + message.getName() + "!");
+    @MessageMapping("/animate")
+    public void playAnimation(FrameAnimation effect) {
+        display.applyEffect(f.getFrames());
     }
 }

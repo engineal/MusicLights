@@ -17,6 +17,9 @@ limitations under the License.
 <html>
     <head>
         <title>Music Lights</title>
+        
+        <meta charset="UTF-8"> 
+        
         <link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link href="/main.css" rel="stylesheet">
         <script src="/webjars/jquery/jquery.min.js"></script>
@@ -30,62 +33,68 @@ limitations under the License.
             Javascript and reload this page!</h2></noscript>
         <div id="main-content" class="container">
             <div class="row">
-                <div class="col-md-6">
-                    <form class="form-inline">
+                <div class="col">
+                    <form>
                         <div class="form-group">
-                            <label for="connect">WebSocket connection:</label>
-                            <button id="connect" class="btn btn-default" type="submit">Connect</button>
-                            <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Disconnect
-                            </button>
+                            <label>WebSocket connection:</label>
+                            <div class="btn-group" role="group" aria-label="...">
+                                <button id="connect" class="btn btn-success">Connect</button>
+                                <button id="disconnect" class="btn btn-danger" disabled="disabled">Disconnect</button>
+                            </div>
                         </div>
                     </form>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <form class="form-inline">
-                        <div class="form-group">
-                            <label for="color-r">Red:</label>
-                            <input type="range" id="color-r" min="0" max="255" step="1" />
-                        </div>
-                        <div class="form-group">
-                            <label for="color-g">Green:</label>
-                            <input type="range" id="color-g" min="0" max="255" step="1" />
-                        </div>
-                        <div class="form-group">
-                            <label for="color-b">Blue:</label>
-                            <input type="range" id="color-b" min="0" max="255" step="1" />
-                        </div>
-                    </form>
+            <div id="controls" style="display: none;">
+                <div class="row">
+                    <div class="col">
+                        <form>
+                            <div class="form-row">
+                                <div class="form-group col">
+                                    <label for="color-r">Red:</label>
+                                    <input type="range" id="color-r" min="0" max="255" step="1" />
+                                </div>
+                                <div class="form-group col">
+                                    <label for="color-g">Green:</label>
+                                    <input type="range" id="color-g" min="0" max="255" step="1" />
+                                </div>
+                                <div class="form-group col">
+                                    <label for="color-b">Blue:</label>
+                                    <input type="range" id="color-b" min="0" max="255" step="1" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <form class="form-inline">
-                        <div class="form-group">
-                            <label for="name">What is your name?</label>
-                            <input type="text" id="name" class="form-control" placeholder="Your name here...">
-                        </div>
-                        <button id="send" class="btn btn-default" type="submit">Send</button>
-                    </form>
+                <div class="row">
+                    <div class="col">
+                        <form>
+                            <div class="form-group">
+                                <button id="christmas" class="btn btn-primary" type="submit">Christmas</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <form class="form-inline">
-                        <button id="christmas" class="btn btn-default" type="submit">Christmas</button>
-                    </form>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <table id="conversation" class="table table-striped" style="display: none;">
-                        <thead>
-                            <tr>
-                                <th>Greetings</th>
-                            </tr>
-                        </thead>
-                        <tbody id="greetings">
-                        </tbody>
-                    </table>
+                <div class="row">
+                    <div class="col">
+                        <form>
+                            <div class="form-group">
+                                <div class="btn-toolbar" role="toolbar" aria-label="...">
+                                    <div class="btn-group mr-2" role="group" aria-label="...">
+                                        <button id="play" class="btn btn-primary" type="submit">Play</button>
+                                        <button id="stop" class="btn btn-primary" type="submit" disabled="disabled">Stop</button>
+                                    </div>
+                                    <div class="btn-group" role="group" aria-label="...">
+                                        <label class="btn btn-secondary" for="upload" style="margin-bottom: 0;">Upload<input type="file" id="upload" hidden></label>
+                                        <button id="download" class="btn btn-secondary">Download</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <textarea id="commands" class="form-control" rows="20"></textarea>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

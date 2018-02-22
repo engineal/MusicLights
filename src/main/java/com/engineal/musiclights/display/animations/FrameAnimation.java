@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Aaron Lucia.
+ * Copyright 2018 Aaron Lucia.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,26 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.engineal.musiclights.server.controller;
+package com.engineal.musiclights.display.animations;
 
-import com.engineal.musiclights.display.Display;
-import com.engineal.musiclights.display.effects.Effect;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.stereotype.Controller;
+import com.engineal.musiclights.display.effects.FrameEffect;
+import java.util.List;
 
 /**
  *
  * @author Aaron Lucia
  */
-@Controller
-public class EffectController {
-    
-    @Autowired
-    private Display display;
-    
-    @MessageMapping("/effect")
-    public void setEffect(Effect effect) {
-        display.applyEffect(effect);
+public class FrameAnimation {
+
+    private List<FrameEffect> frames;
+
+    public void play() {
+        for (FrameEffect frame : frames) {
+            
+        }
     }
 }

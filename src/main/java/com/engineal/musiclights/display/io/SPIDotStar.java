@@ -20,12 +20,17 @@ import com.pi4j.io.spi.SpiDevice;
 import com.pi4j.io.spi.SpiFactory;
 import com.pi4j.io.spi.SpiMode;
 import java.io.IOException;
+import java.util.Arrays;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 /**
  *
  * @author Aaron Lucia
  */
 public class SPIDotStar extends DotStar {
+    
+    private static final Logger log = LogManager.getLogger(SPIDotStar.class);
 
     private SpiDevice spi;
 
@@ -65,6 +70,8 @@ public class SPIDotStar extends DotStar {
     public void show() throws IOException {
         byte[] header = {0x00, 0x00, 0x00, 0x00};
         byte[] footer = {(byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF};
+        
+        log.info(Arrays.toString(data));
         
         spi.write(header);
         spi.write(data);

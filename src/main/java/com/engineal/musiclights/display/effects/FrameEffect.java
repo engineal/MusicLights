@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Aaron Lucia.
+ * Copyright 2018 Aaron Lucia.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,27 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.engineal.musiclights.server.controller;
+package com.engineal.musiclights.display.effects;
 
-import com.engineal.musiclights.display.Display;
-import com.engineal.musiclights.display.effects.StillEffect;
 import java.awt.Color;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.stereotype.Controller;
 
 /**
  *
  * @author Aaron Lucia
  */
-@Controller
-public class ColorController {
-    
-    @Autowired
-    private Display display;
-    
-    @MessageMapping("/color")
-    public void setColor(Color color) {
-        display.applyEffect(new StillEffect(color));
+public class FrameEffect implements Effect {
+
+    public void addSingle(double location, Color color) {
+
     }
+
+    public void addRange(double from, double to, Color color) {
+
+    }
+
+    @Override
+    public Color apply(double x) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

@@ -19,8 +19,8 @@ import com.engineal.musiclights.display.effects.Effect;
 import com.engineal.musiclights.display.effects.StillEffect;
 import com.engineal.musiclights.display.io.MockDotStar;
 import java.awt.Color;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
@@ -34,7 +34,7 @@ import org.junit.Test;
  */
 public class DotStarDisplayTest {
 
-    private static final Logger LOG = Logger.getLogger(DotStarDisplayTest.class.getName());
+    private static final Logger log = LogManager.getLogger(DotStarDisplayTest.class);
 
     @BeforeClass
     public static void setUpClass() {
@@ -60,7 +60,7 @@ public class DotStarDisplayTest {
      */
     @Test
     public void testRunEffect() {
-        LOG.log(Level.INFO, "runEffect");
+        log.info("runEffect");
         int numLEDs = 150;
         MockDotStar strip = new MockDotStar(numLEDs);
         DotStarDisplay instance = new DotStarDisplay(strip, 5);

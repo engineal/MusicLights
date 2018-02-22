@@ -29,9 +29,6 @@ import static org.junit.Assert.*;
  */
 public class DotStarTest {
 
-    public DotStarTest() {
-    }
-
     @BeforeClass
     public static void setUpClass() {
     }

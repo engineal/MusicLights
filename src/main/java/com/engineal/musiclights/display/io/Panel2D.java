@@ -30,24 +30,31 @@ public class Panel2D extends JPanel {
     
     protected final Color[] data; // pixel data
 
-    public Panel2D(int width, int height) {
+    public Panel2D(int width, int height, double scaling) {
         if (width < 1) {
             throw new IndexOutOfBoundsException("You must have at least 1 pixel");
         }
+        super.setMinimumSize(new Dimension(width, height));
         super.setPreferredSize(new Dimension(width, height));
+        super.setMaximumSize(new Dimension(width, height));
         super.setBackground(Color.black);
 
-        data = new Color[width];
+        data = new Color[(int)(width / scaling)];
     }
 
     @Override
-    public void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         
-        for (int i = 0; i < data.length; i++) {
-            g.setColor(data[i]);
+        double resolution = (double) data.length / getWidth();
+        for (int i = 0; i < getWidth(); i++) {
+            g.setColor(data[(int)(i * resolution)]);
             g.drawLine(i, 0, i, getHeight());
         }
+    }
+    
+    public int getNumPixels() {
+        return data.length;
     }
 
     public void clear() {
@@ -63,8 +70,8 @@ public class Panel2D extends JPanel {
      * @param color The color for the pixel
      */
     public void setPixelColor(int index, Color color) {
-        if (index < 0 || index > data.length) {
-            throw new IndexOutOfBoundsException("Index out of range");
+        if (index < 0 || index >= data.length) {
+            throw new IndexOutOfBoundsException("Index out of range: " + index);
         }
 
         data[index] = color;
