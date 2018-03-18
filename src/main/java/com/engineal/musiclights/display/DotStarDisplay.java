@@ -17,6 +17,7 @@ package com.engineal.musiclights.display;
 
 import com.engineal.musiclights.display.effects.Effect;
 import com.engineal.musiclights.display.io.DotStar;
+import java.awt.Color;
 import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -46,7 +47,10 @@ public class DotStarDisplay extends Display {
     public void applyEffect(Effect effect) {
         double resolution = getLength() / strip.getNumLEDs();
         for (int i = 0; i < strip.getNumLEDs(); i++) {
-            strip.setPixelColor(i, effect.apply(i * resolution));
+            Color c = effect.apply(i * resolution);
+            if (c != null) {
+                strip.setPixelColor(i, c);
+            }
         }
         try {
             strip.show();

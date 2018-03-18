@@ -17,6 +17,7 @@ package com.engineal.musiclights.display;
 
 import com.engineal.musiclights.display.effects.Effect;
 import com.engineal.musiclights.display.io.Panel2D;
+import java.awt.Color;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 
@@ -50,7 +51,10 @@ public class FrameDisplay extends Display {
     public void applyEffect(Effect effect) {
         double resolution = getWidth() / panel.getNumPixels();
         for (int i = 0; i < panel.getNumPixels(); i++) {
-            panel.setPixelColor(i, effect.apply(i * resolution));
+            Color c = effect.apply(i * resolution);
+            if (c != null) {
+                panel.setPixelColor(i, c);
+            }
         }
         panel.showChanges();
     }

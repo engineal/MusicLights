@@ -15,6 +15,7 @@
  */
 
 var stompClient = null;
+var COLOR_PATTERN = /^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i;
 var FRAME_PATTERN = /^frame$/i;
 var SINGLE_PATTERN = /^(\d+)=#([\da-f]{6})$/i;
 var RANGE_PATTERN = /^\[(\d+)-(\d+)\]=#([\da-f]{6})$/i;
@@ -35,9 +36,9 @@ function connect() {
     stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
-        //stompClient.subscribe('/topic/greetings', function (greeting) {
-        //    showGreeting(JSON.parse(greeting.body).content);
-        //});
+        stompClient.subscribe('/topic/greetings', function (greeting) {
+            console.log(JSON.parse(greeting.body).content);
+        });
     }, function (message) {
         if (message.includes("Whoops! Lost connection")) {
             disconnect();
@@ -68,6 +69,20 @@ function sendEffect() {
     }));
 }
 
+function parseColor(colorString) {
+    var colorMatch = COLOR_PATTERN.exec(colorString);
+    if (colorMatch) {
+        return {
+            'red': parseInt(colorMatch[1], 16),
+            'green': parseInt(colorMatch[2], 16),
+            'blue': parseInt(colorMatch[3], 16),
+            'alpha': 255
+        };
+    } else {
+        console.log("Cannot parse color: " + colorString);
+    }
+}
+
 function parseCommand(command, frames) {
     var frameMatch = FRAME_PATTERN.exec(command);
     var singleMatch = SINGLE_PATTERN.exec(command);
@@ -75,17 +90,17 @@ function parseCommand(command, frames) {
     
     var currentFrame = frames.length - 1;
     if (frameMatch) {
-        frames.push([]);
+        frames.push({});
         console.log("Start of frame " + (frames.length - 1));
     } else if (singleMatch) {
         var location = singleMatch[1];
-        var c = singleMatch[2];
+        var c = parseColor(singleMatch[2]);
         frames[currentFrame][location] = c;
         console.log("frames[" + currentFrame + "][" + location + "]=" + c);
     } else if (rangeMatch) {
         var from = rangeMatch[1];
         var to = rangeMatch[2];
-        var c = rangeMatch[3];
+        var c = parseColor(rangeMatch[3]);
         for (var i = from; i <= to; i++) {
             frames[currentFrame][i] = c;
         }
@@ -96,7 +111,7 @@ function parseCommand(command, frames) {
 }
 
 function sendCommands() {
-    var frames = [[]];
+    var frames = [{}];
     var lines = $('#commands').val().split('\n');
     for (var i = 0; i < lines.length; ++i) {
         var command = lines[i].replace(/\s+/g, "");
@@ -106,9 +121,17 @@ function sendCommands() {
     }
     console.log(frames);
     
-    /*stompClient.send("/app/animate", {}, JSON.stringify({
-        'type': '.ChristmasEffect'
-    }));*/
+    var sendFrames = [];
+    for (var i = 0; i < frames.length; ++i) {
+        sendFrames.push({
+            'type': '.FrameEffect',
+            'value': frames[i]
+        });
+    }
+    
+    stompClient.send("/app/animate", {}, JSON.stringify({
+        'frames': sendFrames
+    }));
 }
 
 $(function () {

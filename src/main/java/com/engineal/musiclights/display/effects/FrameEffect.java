@@ -16,12 +16,32 @@
 package com.engineal.musiclights.display.effects;
 
 import java.awt.Color;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
  * @author Aaron Lucia
  */
 public class FrameEffect implements Effect {
+    
+    private int place = 0;
+    private Map<Integer, Color> value;
+    
+    public FrameEffect() {
+        value = new HashMap<>();
+        value.put(1, Color.green);
+        value.put(2, Color.black);
+    }
+    
+    public FrameEffect(Map<Integer, Color> value) {
+        this.value = value;
+    }
+    
+    public Map<Integer, Color> getValue() {
+        return Collections.unmodifiableMap(value);
+    }
 
     public void addSingle(double location, Color color) {
 
@@ -33,7 +53,9 @@ public class FrameEffect implements Effect {
 
     @Override
     public Color apply(double x) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Color c = value.get(place);
+        place++;
+        return c;
     }
 
 }

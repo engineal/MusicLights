@@ -15,20 +15,29 @@
  */
 package com.engineal.musiclights.display.animations;
 
-import com.engineal.musiclights.display.effects.FrameEffect;
+import com.engineal.musiclights.display.Display;
+import com.engineal.musiclights.display.effects.Effect;
 import java.util.List;
+import org.apache.logging.log4j.LogManager;
 
 /**
  *
  * @author Aaron Lucia
  */
 public class FrameAnimation {
+    
+    private static final org.apache.logging.log4j.Logger log = LogManager.getLogger(FrameAnimation.class);
 
-    private List<FrameEffect> frames;
+    public List<Effect> frames;
 
-    public void play() {
-        for (FrameEffect frame : frames) {
-            
+    public void play(Display display) {
+        for (Effect frame : frames) {
+            display.applyEffect(frame);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                log.error(ex);
+            }
         }
     }
 }

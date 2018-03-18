@@ -17,8 +17,11 @@ package com.engineal.musiclights.server.controller;
 
 import com.engineal.musiclights.display.Display;
 import com.engineal.musiclights.display.animations.FrameAnimation;
+import com.engineal.musiclights.display.effects.FrameEffect;
+import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
 /**
@@ -26,13 +29,18 @@ import org.springframework.stereotype.Controller;
  * @author Aaron Lucia
  */
 @Controller
-public class FileController {
+public class AnimationController {
     
     @Autowired
     private Display display;
     
     @MessageMapping("/animate")
-    public void playAnimation(FrameAnimation effect) {
-        display.applyEffect(f.getFrames());
+    @SendTo("/topic/greetings")
+    public FrameAnimation playAnimation(FrameAnimation animation) {
+        animation.play(display);
+        //animation.frames = new ArrayList<>();
+        //animation.frames.add(new FrameEffect());
+        //animation.frames.add(new FrameEffect());
+        return null;
     }
 }
